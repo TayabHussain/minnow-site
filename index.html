@@ -237,7 +237,6 @@ footer{padding:0 0 40px;color:var(--muted);font-size:14px}
       <p>Only your name, your email and the first question are required. Everything else is optional.</p>
     </div>
     <form id="f" novalidate autocomplete="off">
-      <input name="hp_trap_q7" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
       <label>Your name<input name="name" autocomplete="off" required></label>
       <label>Email<input name="email" type="email" autocomplete="off" required></label>
 
@@ -420,8 +419,7 @@ f.addEventListener('submit',async e=>{
       age:d.get('age')||'',
       country:d.get('country')||'',
       wish:(d.get('wish')||'').trim(),
-      openToChat:!!d.get('chat'),
-      hp_trap_q7:d.get('hp_trap_q7')||''
+      openToChat:!!d.get('chat')
     })});
     if(!r.ok)throw new Error('bad status '+r.status);
     f.reset();say('You’re on the list. Thank you, '+name.split(' ')[0]+'!','ok');
