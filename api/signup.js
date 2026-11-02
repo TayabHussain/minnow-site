@@ -11,7 +11,6 @@ module.exports = async (req, res) => {
   if (typeof b === 'string') { try { b = JSON.parse(b); } catch { b = {}; } }
   b = b || {};
 
-  if (b.hp_trap_q7) return res.status(200).json({ ok: true }); // honeypot: bots fill this in
 
   const name = clip(b.name, 100).trim();
   const email = clip(b.email, 200).trim();
