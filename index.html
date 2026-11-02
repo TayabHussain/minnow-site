@@ -236,10 +236,10 @@ footer{padding:0 0 40px;color:var(--muted);font-size:14px}
       <p>Join the waiting list and answer a few quick questions (about 2 minutes). Your answers decide which services we build first.</p>
       <p>Only your name, your email and the first question are required. Everything else is optional.</p>
     </div>
-    <form id="f" novalidate>
+    <form id="f" novalidate autocomplete="off">
       <input name="hp_trap_q7" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-      <label>Your name<input name="name" autocomplete="name" required></label>
-      <label>Email<input name="email" type="email" autocomplete="email" required></label>
+      <label>Your name<input name="name" autocomplete="off" required></label>
+      <label>Email<input name="email" type="email" autocomplete="off" required></label>
 
       <div class="survey">
         <fieldset>
