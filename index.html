@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Minnow – mini-programs that open where you already pay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#f2f4fb;--ink:#12182b;--muted:#4d5670;--line:#d5daea;--card:#ffffff;
+  --accent:#2f54eb;--accent-ink:#ffffff;--lime:#c8f169;--lime-ink:#1c2a05;
+  --head:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1222;--ink:#eef0fa;--muted:#a3abc6;--line:#272e48;--card:#171c33;
+  --accent:#7d97ff;--accent-ink:#0e1222;--lime:#c8f169;--lime-ink:#1c2a05;}}
+:root[data-theme="dark"]{--bg:#0e1222;--ink:#eef0fa;--muted:#a3abc6;--line:#272e48;--card:#171c33;--accent:#7d97ff;--accent-ink:#0e1222}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--body)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+header.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.logo{font:700 24px var(--head);letter-spacing:-.02em;text-decoration:none}
+.logo i{display:inline-block;width:.62em;height:.62em;background:var(--lime);border:2px solid var(--ink);border-radius:50%;margin-right:.3em}
+.btn{display:inline-block;font:600 16px var(--body);background:var(--accent);color:var(--accent-ink);border:0;border-radius:10px;padding:13px 22px;text-decoration:none;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);padding:10px 18px}
+h1,h2,h3{font-family:var(--head);letter-spacing:-.025em;line-height:1.06;margin:0}
+h1{font-size:clamp(40px,6.4vw,76px);font-weight:700;max-width:12ch}
+h2{font-size:clamp(28px,4vw,42px);font-weight:700;margin-bottom:14px}
+h3{font-size:21px;font-weight:700;margin-bottom:6px;line-height:1.2}
+p{margin:0 0 14px}
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center;padding:36px 0 84px}
+.lede{font-size:19px;color:var(--muted);max-width:46ch;margin:22px 0 28px}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.demo{width:300px;max-width:100%;margin:0 auto;background:#fff;color:#12182b;border:10px solid #0a0d1a;border-radius:40px;box-shadow:0 0 0 1.5px #3a4468,8px 8px 0 var(--lime);overflow:hidden;position:relative}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:9px 20px 7px;font:600 12px var(--body);background:#fff}
+.notch{width:74px;height:16px;border-radius:10px;background:#0a0d1a}
+.screen{position:relative;height:468px;overflow:hidden;background:#f5f6fa}
+.view{position:absolute;inset:0;display:flex;flex-direction:column;background:#f5f6fa;transition:transform .32s ease}
+.view.off{transform:translateX(100%);pointer-events:none;visibility:hidden;transition:transform .32s ease,visibility 0s .32s}
+.host-hero{background:#12182b;color:#fff;padding:16px 16px 20px}
+.host-hero b{font:700 21px var(--head);display:block;letter-spacing:-.02em}
+.host-hero span{font-size:13px;color:#c3c9e0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:18px 8px 6px;background:#fff}
+.tile{background:none;border:0;font:500 11px var(--body);color:#12182b;display:grid;gap:6px;justify-items:center;cursor:pointer;padding:0}
+.tile i{font-style:normal;width:48px;height:48px;border-radius:15px;background:#e6e9f5;display:grid;place-items:center;font-size:22px}
+.tile.go i{background:#c8f169;outline:2px solid #12182b;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{outline-offset:4px;outline-color:#2f54eb}}
+.hint{margin:0;padding:6px 14px 14px;background:#fff;font-size:12px;color:#5c6580;text-align:center}
+.promo{margin:12px;border-radius:14px;background:#fff;padding:14px;font-size:13px;color:#5c6580}
+.promo b{display:block;color:#12182b;font:700 15px var(--head);margin-bottom:2px}
+.mp-head{display:grid;grid-template-columns:76px 1fr 76px;align-items:center;padding:4px 8px 8px;background:#fff}
+.mp-title{font:600 15px var(--body);text-align:center}
+.back{border:0;background:none;font-size:26px;line-height:1;cursor:pointer;width:34px;height:30px;color:#12182b}
+.capsule{justify-self:end;display:flex;align-items:center;border:1px solid #cfd4e6;border-radius:999px;height:28px;background:#fff}
+.capsule button{border:0;background:none;font:700 13px var(--body);color:#12182b;padding:0 9px;height:100%;cursor:pointer}
+.capsule hr{width:1px;height:14px;margin:0;border:0;background:#cfd4e6}
+.pickup{margin:10px 10px 4px;background:#e9f9c4;color:#1c2a05;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:500}
+.list{flex:1;overflow:auto;padding:8px 10px}
+.item{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:9px;margin-bottom:8px}
+.pic{width:42px;height:42px;border-radius:10px;background:#eef1fb;display:grid;place-items:center;font-size:22px;flex:none}
+.nm{flex:1;font:600 14px var(--body)}
+.nm small{display:block;font-weight:400;color:#5c6580;font-size:12px}
+.nm em{font-style:normal;font-weight:600;font-size:13px;display:block;margin-top:2px}
+.qty{display:flex;align-items:center;gap:8px;font:600 14px var(--body)}
+.q{width:26px;height:26px;border-radius:50%;border:0;background:#2f54eb;color:#fff;font-size:17px;line-height:1;cursor:pointer}
+.q.minus{background:#e6e9f5;color:#12182b}
+.cartbar{display:flex;justify-content:space-between;align-items:center;background:#12182b;color:#fff;padding:10px 12px;gap:8px;font-size:13px}
+.cartbar b{font:700 17px var(--head);display:block}
+.cartbar button{border:0;border-radius:999px;background:#c8f169;color:#1c2a05;font:700 14px var(--body);padding:10px 16px;cursor:pointer}
+.cartbar button:disabled{opacity:.35;cursor:default}
+.scrim{position:absolute;inset:0;background:rgba(10,14,30,.5);opacity:0;pointer-events:none;transition:opacity .25s;z-index:5}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:18px 18px 0 0;padding:18px 16px 16px;transform:translateY(105%);transition:transform .3s ease;z-index:6;visibility:hidden}
+.sheet.on{transform:none;visibility:visible}
+.sheet small{color:#5c6580;font-size:12px}
+.amt{font:700 34px var(--head);letter-spacing:-.03em;margin:2px 0 12px}
+.method{display:flex;align-items:center;gap:10px;border:1.5px solid #12182b;border-radius:12px;padding:10px;margin-bottom:12px;font:600 14px var(--body)}
+.method span:first-child{width:32px;height:32px;border-radius:9px;background:#c8f169;display:grid;place-items:center;font:700 16px var(--head);color:#1c2a05}
+.method small{display:block;font-weight:400}
+.confirm{width:100%;border:0;border-radius:12px;background:#2f54eb;color:#fff;font:600 16px var(--body);padding:13px;cursor:pointer}
+.cancel{display:block;width:100%;border:0;background:none;color:#5c6580;font:500 13px var(--body);padding:10px 0 0;cursor:pointer}
+#v-ok{align-items:center;justify-content:center;text-align:center;padding:24px;gap:6px;background:#fff;z-index:4}
+#v-ok svg{width:72px;height:72px;margin-bottom:8px}
+#v-ok b{font:700 24px var(--head);letter-spacing:-.02em}
+#v-ok p{margin:0;color:#5c6580;font-size:14px}
+#v-ok .confirm{margin-top:18px}
+.home{height:5px;width:96px;background:#12182b;border-radius:3px;margin:7px auto 8px}
+.tile:nth-child(1) i{background:#c8f169}.tile:nth-child(2) i{background:#dbe4ff}.tile:nth-child(3) i{background:#ffe9a8}.tile:nth-child(4) i{background:#ffd6e7}
+.card{border:2px solid transparent;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.card.sel{border-color:#2f54eb}
+.pr{font:600 13px var(--body);white-space:nowrap}
+.sec{font:600 13px var(--body);color:#5c6580;margin:12px 2px 6px}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.chip{border:2px solid #cfd4e6;background:#fff;border-radius:10px;padding:8px 0;font:600 13px var(--body);cursor:pointer;color:#12182b}
+.chip.sel{border-color:#2f54eb;background:#eef1ff}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:9px}
+legend{font:600 15px var(--body);color:#fff;padding:0;margin-bottom:8px}
+legend small{font-weight:400;color:#b9c0da}
+.opt{display:flex;gap:10px;align-items:center;font:400 15px var(--body);color:#e1e5f5}
+.opt input{width:18px;height:18px;flex:none;padding:0;accent-color:#c8f169}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale label{display:flex;flex-direction:column;align-items:center;gap:6px;font:400 14px var(--body);color:#e1e5f5}
+.scale input{width:20px;height:20px;padding:0;accent-color:#c8f169}
+.ends{display:flex;justify-content:space-between;font-size:12px;color:#b9c0da}
+.survey{border-top:1px solid #3a4468;padding-top:18px;display:grid;gap:22px}
+textarea{font:400 16px var(--body);padding:12px 13px;border-radius:9px;border:1.5px solid #4a5273;background:#fff;color:#12182b;width:100%;resize:vertical;min-height:72px}
+@media (min-width:821px){.signup>div:first-child{position:sticky;top:24px;align-self:start}}
+.cap{text-align:center;color:var(--muted);font-size:14px;margin:18px 0 0}
+@media (prefers-reduced-motion:reduce){.view,.sheet,.scrim{transition:none}.tile.go i{animation:none}}
+section{padding:70px 0;border-top:1.5px solid var(--line)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:30px;counter-reset:s;padding:0;list-style:none}
+.steps li{counter-increment:s;padding-top:16px;border-top:4px solid var(--ink)}
+.steps li::before{content:"Step " counter(s);display:block;font:600 14px var(--body);color:var(--accent);margin-bottom:6px}
+.steps p{color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:28px}
+.box{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:26px}
+.box ul{margin:12px 0 0;padding-left:20px;color:var(--muted)}
+.box li{margin-bottom:6px}
+.signup{background:#12182b;color:#f2f4fb;border:1.5px solid #3a4468;border-radius:22px;padding:clamp(26px,5vw,56px);display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-bottom:60px}
+.signup h2{color:#ffffff}
+.signup p{color:#e1e5f5}
+form{display:grid;gap:14px}
+label{font:600 15px var(--body);display:grid;gap:6px;color:#ffffff}
+input::placeholder{color:#6b7391}
+select,input{color-scheme:light}
+input,select{font:400 16px var(--body);padding:12px 13px;border-radius:9px;border:1.5px solid #4a5273;background:#fff;color:#12182b;width:100%}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:#e1e5f5}
+.check input{width:20px;height:20px;margin-top:3px;flex:none}
+.signup .btn{background:var(--lime);color:var(--lime-ink);font-size:17px;padding:15px 22px}
+#msg{min-height:1.4em;font-weight:600;margin:0}
+#msg.err{color:#ffb4a8}#msg.ok{color:var(--lime)}
+footer{padding:0 0 40px;color:var(--muted);font-size:14px}
+@media (max-width:820px){.hero,.signup,.two,.steps{grid-template-columns:1fr}.hero{gap:34px;padding-bottom:56px}h1{max-width:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="#top"><i></i>Minnow</a>
+    <a class="btn ghost" href="#join">Get early access</a>
+  </header>
+
+  <div class="hero" id="top">
+    <div>
+      <h1>Small apps that open where you already pay.</h1>
+      <p class="lede">Book a table, split a bill, pick a delivery slot: Minnow brings WeChat-style mini-programs to your phone, inside the shops and services you already use, with Wero as the payment method. No new app to download.</p>
+      <div class="cta-row">
+        <a class="btn" href="#join">Join the waiting list</a>
+        <span style="color:var(--muted);font-size:15px">Free to join. One email when we launch.</span>
+      </div>
+    </div>
+
+    <div class="demo" aria-label="Interactive example of a mini-program on a phone">
+        <div class="bar"><span>9:41</span><i class="notch"></i><span>5G</span></div>
+        <div class="screen">
+          <div class="view" id="v-host">
+            <div class="host-hero"><b>Marktplein Noord</b><span>Local services · Amsterdam</span></div>
+            <div class="grid">
+              <button class="tile" data-k="food" aria-label="Open mini-program: Food delivery"><i>🍔</i>Food delivery</button>
+              <button class="tile" data-k="hotel" aria-label="Open mini-program: Hotel"><i>🏨</i>Hotel</button>
+              <button class="tile" data-k="taxi" aria-label="Open mini-program: Taxi"><i>🚕</i>Taxi</button>
+              <button class="tile" data-k="beauty" aria-label="Open mini-program: Beauty appointment"><i>💅</i>Beauty</button>
+            </div>
+            <p class="hint">Tap a service to open its mini-program</p>
+            <div class="promo"><b>One payment, four services</b>Every mini-program here pays with Wero.</div>
+          </div>
+
+          <div class="view off" id="v-mp">
+            <div class="mp-head">
+              <button class="back" id="back" aria-label="Back">‹</button>
+              <div class="mp-title" id="mpt"></div>
+              <div class="capsule"><button aria-label="More options" tabindex="-1">•••</button><hr><button id="close" aria-label="Close mini-program">◎</button></div>
+            </div>
+            <div class="pickup" id="banner"></div>
+            <div class="list" id="list"></div>
+            <div class="cartbar"><div><span id="cnt">Your order is empty</span><b id="tot">€0,00</b></div><button id="checkout" disabled>Checkout</button></div>
+          </div>
+
+          <div class="view off" id="v-ok">
+            <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="34" fill="#c8f169" stroke="#12182b" stroke-width="2.5"/><path d="M21 37l10 10 20-22" fill="none" stroke="#12182b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <b id="okt">Order placed</b>
+            <p id="okline">Paid with Wero</p>
+            <p id="okl2"></p>
+            <button class="confirm" id="done">Back to Marktplein Noord</button>
+          </div>
+
+          <div class="scrim" id="scrim"></div>
+          <div class="sheet" id="sheet" role="dialog" aria-label="Payment">
+            <small id="merch"></small>
+            <div class="amt" id="amt">€0,00</div>
+            <div class="method"><span>W</span><span>Wero<small>Pay by bank, no card needed</small></span></div>
+            <button class="confirm" id="confirm">Confirm payment</button>
+            <button class="cancel" id="cancel">Cancel</button>
+          </div>
+        </div>
+        <div class="home"></div>
+      </div>
+      <p class="cap">Each service opens inside the page you’re on. No download, no sign-up.</p>
+  </div>
+
+  <section id="how">
+    <h2>No new app. Just tap and go.</h2>
+    <p style="color:var(--muted);max-width:60ch">You don’t install or sign up for anything. The service you need opens right inside the page you’re already on.</p>
+    <ol class="steps">
+      <li><h3>Open a service</h3><p>Find a taxi, a hotel, food delivery or a beauty appointment inside a page you already use.</p></li>
+      <li><h3>Choose and book</h3><p>The mini-program opens in place. Pick what you want, with no download and no new account.</p></li>
+      <li><h3>Confirm with Wero</h3><p>Check the total and confirm once, paying directly from your bank.</p></li>
+    </ol>
+  </section>
+
+  <section id="why">
+    <h2>Why you might like it</h2>
+    <div class="two">
+      <div class="box"><h3>Less app clutter</h3>
+        <p style="color:var(--muted)">Book, order and pay without filling your phone with apps you use once.</p>
+        <ul><li>Nothing to download or update</li><li>No extra accounts or passwords</li><li>Works inside pages you already use</li></ul></div>
+      <div class="box"><h3>Simple, familiar payments</h3>
+        <p style="color:var(--muted)">One way to pay across different services.</p>
+        <ul><li>Pay with Wero, straight from your bank</li><li>Confirm once, no card details to type</li><li>See the total before you pay</li></ul></div>
+    </div>
+  </section>
+
+  <div class="signup" id="join">
+    <div>
+      <h2>Get early access and shape Minnow</h2>
+      <p>Join the waiting list and answer a few quick questions (about 2 minutes). Your answers decide which services we build first.</p>
+      <p>Only your name, your email and the first question are required. Everything else is optional.</p>
+    </div>
+    <form id="f" novalidate>
+      <input name="hp_trap_q7" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <label>Your name<input name="name" autocomplete="name" required></label>
+      <label>Email<input name="email" type="email" autocomplete="email" required></label>
+
+      <div class="survey">
+        <fieldset>
+          <legend>1. Would you use a mini-program inside a page instead of downloading an app? <small>(required)</small></legend>
+          <label class="opt"><input type="radio" name="wouldUse" value="Definitely"> Definitely</label>
+          <label class="opt"><input type="radio" name="wouldUse" value="Probably"> Probably</label>
+          <label class="opt"><input type="radio" name="wouldUse" value="Not sure"> Not sure</label>
+          <label class="opt"><input type="radio" name="wouldUse" value="Probably not"> Probably not</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>2. What do you do on your phone at least once a month? <small>(pick any)</small></legend>
+          <label class="opt"><input type="checkbox" name="usage" value="Order food delivery"> Order food delivery</label>
+          <label class="opt"><input type="checkbox" name="usage" value="Book a taxi or ride"> Book a taxi or ride</label>
+          <label class="opt"><input type="checkbox" name="usage" value="Book hotels or travel"> Book hotels or travel</label>
+          <label class="opt"><input type="checkbox" name="usage" value="Book beauty or health appointments"> Book beauty or health appointments</label>
+          <label class="opt"><input type="checkbox" name="usage" value="Split bills with friends"> Split bills with friends</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>3. How annoying is downloading an app for a one-off service?</legend>
+          <div class="scale">
+            <label><input type="radio" name="annoy" value="1">1</label>
+            <label><input type="radio" name="annoy" value="2">2</label>
+            <label><input type="radio" name="annoy" value="3">3</label>
+            <label><input type="radio" name="annoy" value="4">4</label>
+            <label><input type="radio" name="annoy" value="5">5</label>
+          </div>
+          <div class="ends"><span>Not at all</span><span>Very annoying</span></div>
+        </fieldset>
+
+        <label>4. How do you usually pay online?
+          <select name="payHow">
+            <option value="">Choose one</option>
+            <option>iDEAL</option>
+            <option>Credit or debit card</option>
+            <option>PayPal</option>
+            <option>Apple Pay or Google Pay</option>
+            <option>Wero</option>
+            <option>Something else</option>
+          </select>
+        </label>
+
+        <fieldset>
+          <legend>5. What would worry you about paying inside a mini-program? <small>(pick any)</small></legend>
+          <label class="opt"><input type="checkbox" name="worry" value="Payment security"> Payment security</label>
+          <label class="opt"><input type="checkbox" name="worry" value="My personal data"> My personal data</label>
+          <label class="opt"><input type="checkbox" name="worry" value="Trusting the service provider"> Trusting the service provider</label>
+          <label class="opt"><input type="checkbox" name="worry" value="Nothing in particular"> Nothing in particular</label>
+        </fieldset>
+
+        <label>6. Which age group are you in?
+          <select name="age">
+            <option value="">Prefer not to say</option>
+            <option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55 or older</option>
+          </select>
+        </label>
+
+        <label>7. Which country do you live in?
+          <select name="country">
+            <option value="">Prefer not to say</option>
+            <option>Netherlands</option><option>Belgium</option><option>Germany</option><option>France</option><option>Another EU country</option><option>Outside the EU</option>
+          </select>
+        </label>
+
+        <label>8. Which service would you most want to use this way, and why?
+          <textarea name="wish" maxlength="500"></textarea>
+        </label>
+      </div>
+
+      <label class="check"><input type="checkbox" name="chat"> I’m open to a short chat about my answers</label>
+      <button class="btn" type="submit" id="go">Join the waiting list</button>
+      <p id="msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <footer>Minnow is an independent concept. It is not affiliated with or endorsed by Wero, EPI or any other payment provider. We’ll only use your email to contact you about Minnow, and your survey answers only to improve it.</footer>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const fmt=c=>'€'+(c/100).toFixed(2).replace('.',',');
+const P={
+ food:{t:'Food delivery',m:'Napoli Kitchen',b:'Delivering to Noorderpark 12 · about 25 minutes',cta:'Checkout',kind:'qty',fee:250,
+  it:[{n:'Margherita pizza',d:'Tomato, mozzarella, basil',p:1150,e:'🍕'},{n:'Pad thai',d:'Rice noodles, peanuts, lime',p:1300,e:'🍜'},{n:'Poke bowl',d:'Salmon, edamame, rice',p:1250,e:'🥗'},{n:'Tiramisu',d:'Made in-house',p:550,e:'🍰'}],
+  ok:['Order placed','Delivery in about 25 minutes']},
+ hotel:{t:'Hotel booking',m:'Hotel Noorderlicht',b:'Hotel Noorderlicht · check-in Friday 6 November',cta:'Book room',kind:'room',
+  it:[{n:'Standard room',d:'Queen bed, 18 m²',p:8900,e:'🛏️'},{n:'Canal view',d:'Queen bed, 24 m²',p:11900,e:'🌇'},{n:'Suite',d:'King bed, lounge',p:15900,e:'👑'}],
+  ok:['Booking confirmed','']},
+ taxi:{t:'Taxi',m:'Noord Taxi',b:'Marktplein Noord → Schiphol Airport · about 25 min',cta:'Book ride',kind:'ride',
+  it:[{n:'Standard',d:'3 min away · 4 seats',p:4200,e:'🚕'},{n:'Comfort',d:'5 min away · newer car',p:5400,e:'🚖'},{n:'XL',d:'8 min away · 6 seats',p:6800,e:'🚐'}],
+  ok:['Ride booked','Your driver arrives in about 3 minutes']},
+ beauty:{t:'Beauty appointment',m:'Studio Lila',b:'Studio Lila · Saturday 7 November',cta:'Book appointment',kind:'slot',
+  it:[{n:'Haircut',d:'45 min · wash and style',p:3800,e:'💇'},{n:'Manicure',d:'40 min · gel polish',p:3200,e:'💅'},{n:'Facial',d:'60 min · deep cleanse',p:5500,e:'🧖'}],
+  slots:['10:00','11:30','14:00','16:30'],
+  ok:['Appointment booked','']}
+};
+let cur='food',qty=[],sel=0,nights=2,slot=null;
+function total(){
+  const p=P[cur];
+  if(p.kind==='qty'){const s=p.it.reduce((a,x,i)=>a+x.p*qty[i],0);return s?s+p.fee:0}
+  if(p.kind==='room')return p.it[sel].p*nights;
+  return p.it[sel].p;
+}
+function info(){
+  const p=P[cur],x=p.it[sel];
+  if(p.kind==='qty'){const n=qty.reduce((a,b)=>a+b,0);return n?[n+(n===1?' item':' items')+' · incl. '+fmt(p.fee)+' delivery',true]:['Your order is empty',false]}
+  if(p.kind==='room')return [x.n+' · '+nights+(nights===1?' night':' nights'),true];
+  if(p.kind==='ride')return [x.n+' · '+x.d.split(' · ')[0],true];
+  return slot?[x.n+' · Sat '+slot,true]:['Choose a time',false];
+}
+function card(x,i,p){
+  const price=p.kind==='room'?fmt(x.p).replace(',00','')+' / night':fmt(x.p);
+  return '<button class="item card'+(i===sel?' sel':'')+'" data-sel="'+i+'"><div class="pic">'+x.e+'</div><div class="nm">'+x.n+'<small>'+x.d+'</small></div><span class="pr">'+price+'</span></button>';
+}
+function render(){
+  const p=P[cur];let h='';
+  if(p.kind==='qty'){
+    h=p.it.map((x,i)=>'<div class="item"><div class="pic">'+x.e+'</div><div class="nm">'+x.n+'<small>'+x.d+'</small><em>'+fmt(x.p)+'</em></div><div class="qty">'+(qty[i]?'<button class="q minus" data-i="'+i+'" data-d="-1" aria-label="Remove one '+x.n+'">−</button><span>'+qty[i]+'</span>':'')+'<button class="q" data-i="'+i+'" data-d="1" aria-label="Add '+x.n+'">+</button></div></div>').join('');
+  }else{
+    h=p.it.map((x,i)=>card(x,i,p)).join('');
+    if(p.kind==='room')h+='<div class="item"><div class="nm">Nights<small>From Friday 6 November</small></div><div class="qty"><button class="q minus" data-n="-1" aria-label="Fewer nights">−</button><span>'+nights+'</span><button class="q" data-n="1" aria-label="More nights">+</button></div></div>';
+    if(p.kind==='slot')h+='<div class="sec">Pick a time</div><div class="chips">'+p.slots.map(t=>'<button class="chip'+(t===slot?' sel':'')+'" data-slot="'+t+'">'+t+'</button>').join('')+'</div>';
+  }
+  $('list').innerHTML=h;
+  const f=info();
+  $('cnt').textContent=f[0];
+  $('tot').textContent=fmt(total());
+  $('checkout').disabled=!f[1];
+}
+$('list').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;const d=b.dataset;
+  if(d.i!==undefined)qty[+d.i]=Math.max(0,qty[+d.i]+ +d.d);
+  else if(d.sel!==undefined)sel=+d.sel;
+  else if(d.n!==undefined)nights=Math.min(5,Math.max(1,nights+ +d.n));
+  else if(d.slot!==undefined)slot=d.slot;
+  render();
+});
+const off=(id,v)=>$(id).classList.toggle('off',v);
+const sheet=v=>{$('sheet').classList.toggle('on',v);$('scrim').classList.toggle('on',v)};
+const closeMp=()=>{sheet(false);off('v-mp',true)};
+function openMp(k){
+  cur=k;const p=P[k];qty=p.it.map(()=>0);sel=0;nights=2;slot=null;
+  $('mpt').textContent=p.t;$('banner').textContent=p.b;$('checkout').textContent=p.cta;$('merch').textContent=p.m;
+  render();$('list').scrollTop=0;off('v-mp',false);
+}
+document.querySelectorAll('.tile').forEach(t=>t.addEventListener('click',()=>openMp(t.dataset.k)));
+$('back').addEventListener('click',closeMp);
+$('close').addEventListener('click',closeMp);
+$('checkout').addEventListener('click',()=>{$('amt').textContent=fmt(total());sheet(true)});
+$('cancel').addEventListener('click',()=>sheet(false));
+$('scrim').addEventListener('click',()=>sheet(false));
+$('confirm').addEventListener('click',()=>{
+  const p=P[cur];let l2=p.ok[1];
+  if(cur==='hotel')l2=p.it[sel].n+' · '+nights+(nights===1?' night':' nights');
+  if(cur==='beauty')l2=p.it[sel].n+' · Saturday at '+slot;
+  $('okt').textContent=p.ok[0];$('okl2').textContent=l2;
+  $('okline').textContent='Paid '+fmt(total())+' with Wero';
+  sheet(false);off('v-ok',false);
+});
+$('done').addEventListener('click',()=>{off('v-ok',true);off('v-mp',true)});
+
+const f=document.getElementById('f'),msg=document.getElementById('msg'),go=document.getElementById('go');
+function say(t,c){msg.textContent=t;msg.className=c||''}
+f.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const d=new FormData(f),name=(d.get('name')||'').trim(),email=(d.get('email')||'').trim(),wouldUse=d.get('wouldUse');
+  if(!name||!/^\S+@\S+\.\S+$/.test(email)){say('Please add your name and a valid email.','err');return}
+  if(!wouldUse){say('Please answer question 1.','err');return}
+  go.disabled=true;say('Saving…');
+  try{
+    const r=await fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      name,email,wouldUse,
+      usage:d.getAll('usage'),
+      annoyance:d.get('annoy')||'',
+      payHow:d.get('payHow')||'',
+      worries:d.getAll('worry'),
+      age:d.get('age')||'',
+      country:d.get('country')||'',
+      wish:(d.get('wish')||'').trim(),
+      openToChat:!!d.get('chat'),
+      hp_trap_q7:d.get('hp_trap_q7')||''
+    })});
+    if(!r.ok)throw new Error('bad status '+r.status);
+    f.reset();say('You’re on the list. Thank you, '+name.split(' ')[0]+'!','ok');
+  }catch(err){say('Something went wrong sending your details. Please try again.','err');}
+  go.disabled=false;
+});
+</script>
+</body>
+</html>
