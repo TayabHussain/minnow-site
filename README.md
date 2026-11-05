@@ -8,7 +8,7 @@
 - IP addresses are stored only as a salted one-way hash. That is enough to count each visitor once, but the raw address is never saved.
 
 ## Setup
-1. **Supabase.** Create a project at supabase.com. Open SQL Editor, paste all of `supabase/schema.sql`, click Run. (Already ran an earlier version? Run `supabase/update-1.sql` instead.)
+1. **Supabase.** Create a project at supabase.com. Open SQL Editor, paste all of `supabase/schema.sql`, click Run. (Already ran an earlier version? Run `supabase/update-2.sql` instead. It keeps your data and adds main-page tracking, the daily chart data and the responses list.)
 2. **Supabase keys.** Project Settings → API. Copy the Project URL and the *secret* key (or the legacy `service_role` key). Never put this key in a web page.
 3. **Vercel environment variables** (Project → Settings → Environment Variables), then redeploy:
 
@@ -26,3 +26,9 @@
 - "Unique" means unique hashed IP. People on the same wifi or mobile network can share an IP, and one person can have several, so treat the numbers as a good estimate.
 - Conversion = unique CTA clickers whose IP also submitted the survey, divided by all unique CTA clickers. If someone switches network between clicking and submitting, they won't be matched.
 - Because IP addresses are personal data under GDPR, keep the privacy sentences on the pages and mention it in your report.
+
+## Dashboard (`/dashboard`)
+- **Cards:** landing page visitors, CTA click rate (CTR = landing visitors who clicked the CTA / landing visitors), people who opened the survey, people who submitted, and survey completion (CTA clickers who submitted).
+- **Charts:** funnel, last 30 days (hover or tap for numbers, or switch to a table), and CTA clickers per source.
+- **Survey responses:** every submission with its source label, whether that person clicked the CTA or opened the survey link directly, filters (clicked the CTA, direct to survey, social media), expandable answers and a CSV download.
+- The landing page logs a visit through `/api/view` (`page: 'landing'`), the CTA through `/api/go`, and the survey page through `/api/view`. All three store the same hashed IP, which is how clicks, visits and submissions are matched to one person.

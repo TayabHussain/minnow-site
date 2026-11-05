@@ -1,4 +1,5 @@
-// The survey page calls this when it loads: logs who arrived and from which source.
+// Pages call this when they load: logs who arrived (hashed IP) and from which source.
+// page = 'landing' (main page) or 'survey' (survey page, the default).
 const { clip, clientIp, hashIp, isBot, cleanSrc, sbInsert } = require('../lib/util');
 
 module.exports = async (req, res) => {
@@ -10,8 +11,11 @@ module.exports = async (req, res) => {
   if (typeof b === 'string') { try { b = JSON.parse(b); } catch { b = {}; } }
   b = b || {};
 
+  const row = { ip_hash: hashIp(clientIp(req)), src: cleanSrc(b.src) };
+  if (b.page === 'landing') row.page = 'landing'; // survey visits omit it, so they keep working before update-2.sql is run
+
   try {
-    await sbInsert('survey_views', { ip_hash: hashIp(clientIp(req)), src: cleanSrc(b.src) });
+    await sbInsert('survey_views', row);
   } catch (err) {
     console.error('View not logged:', err.message);
   }
