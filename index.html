@@ -402,6 +402,7 @@ $('confirm').addEventListener('click',()=>{
 $('done').addEventListener('click',()=>{off('v-ok',true);off('v-mp',true)});
 
 const f=document.getElementById('f'),msg=document.getElementById('msg'),go=document.getElementById('go');
+const q=new URLSearchParams(location.search),source=(q.get('src')||q.get('ref')||'direct').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,30)||'direct';
 function say(t,c){msg.textContent=t;msg.className=c||''}
 f.addEventListener('submit',async e=>{
   e.preventDefault();
@@ -411,7 +412,7 @@ f.addEventListener('submit',async e=>{
   go.disabled=true;say('Saving…');
   try{
     const r=await fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      name,email,wouldUse,
+      name,email,wouldUse,source,
       usage:d.getAll('usage'),
       annoyance:d.get('annoy')||'',
       payHow:d.get('payHow')||'',
