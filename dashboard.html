@@ -71,8 +71,8 @@ tr:last-child td{border-bottom:0}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px}
 .chip{border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:6px 14px;font-size:14px}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-tr.detail td{background:var(--bg);padding:14px 16px}
-dl.ans{display:grid;grid-template-columns:minmax(120px,200px) 1fr;gap:6px 16px;margin:0}
+tr.detail td{background:var(--bg);padding:14px 16px;white-space:normal}
+dl.ans{display:grid;grid-template-columns:minmax(180px,42%) 1fr;gap:8px 20px;margin:0}
 dl.ans dt{color:var(--muted);font-size:13px}
 dl.ans dd{margin:0;overflow-wrap:anywhere}
 #tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--bg);border-radius:8px;padding:8px 10px;font-size:13px;max-width:240px;display:none;box-shadow:0 4px 14px rgba(0,0,0,.25)}
@@ -154,7 +154,7 @@ dl.ans{gap:0}dl.ans dt{margin-top:10px}dl.ans dd{font-weight:600}}
       <p class="hint" id="respmsg"></p>
       <div class="tablewrap">
         <table id="resptable" hidden>
-          <thead><tr><th>Date</th><th>Name</th><th>Source</th><th>How they arrived</th><th>Would use</th><th><span class="sr">Details</span></th></tr></thead>
+          <thead><tr><th>Date</th><th>Name</th><th>Source</th><th>How they arrived</th><th>Likely to try</th><th><span class="sr">Details</span></th></tr></thead>
           <tbody id="resprows"></tbody>
         </table>
       </div>
@@ -289,7 +289,7 @@ function renderStats(s){
 }
 
 /* ---------- responses ---------- */
-let RESP=[],FILTER='all';
+let RESP=[],FILTER='all',QDEF=null;
 const FILTERS=[['all','All',()=>true],['cta','Clicked the CTA',r=>r.via_cta],['direct','Direct to survey',r=>!r.via_cta],['social','Social media',r=>group(r.src||'direct')==='Social media']];
 const fmtDate=d=>new Date(d).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'});
 const arr=v=>Array.isArray(v)&&v.length?v.join(', '):'–';
@@ -308,22 +308,33 @@ function renderResponses(){
   list.forEach(r=>{
     const tr=el('tr');
     cell(tr,fmtDate(r.created_at));
-    cell(tr,r.name||'–');
+    cell(tr,r.name||'Anonymous');
     const s=el('td');s.appendChild(document.createTextNode(r.src||'direct'));s.appendChild(el('span',{class:'tag'},group(r.src||'direct')));tr.appendChild(s);
     const a=el('td');a.appendChild(el('span',{class:'badge '+(r.via_cta?'cta':'direct')},r.via_cta?'Clicked the CTA':'Direct to survey'));tr.appendChild(a);
-    cell(tr,r.would_use||'–');
+    cell(tr,(r.answers&&r.answers.q11)||r.would_use||'–');
     const t=el('td',{class:'n'});const btn=el('button',{class:'btn ghost','aria-expanded':'false'},'Details');t.appendChild(btn);tr.appendChild(t);
     body.appendChild(tr);
     const dt=el('tr',{class:'detail'});dt.hidden=true;const dc=el('td',{colspan:'6'});
     const dl=el('dl',{class:'ans'});
-    [['Email',r.email],['Would use a mini-program instead of an app',r.would_use||'–'],['Used on phone monthly',arr(r.usage)],['Annoyance of one-off app downloads (1–5)',r.annoyance??'–'],['Usual online payment',r.pay_how||'–'],['Worries',arr(r.worries)],['Age group',r.age||'–'],['Country',r.country||'–'],['Most wanted service and why',r.wish||'–'],['Open to a short chat',r.open_to_chat?'Yes':'No'],['Saw the landing page first',r.saw_landing?'Yes':'No (opened the survey link directly)']].forEach(p=>{dl.appendChild(el('dt',{},p[0]));dl.appendChild(el('dd',{},String(p[1]??'–')))});
+    const items=[];
+    if(r.answers){
+      (QDEF?QDEF.questions:Object.keys(r.answers).map(k=>({id:k,text:k}))).forEach((q,i)=>{const v=r.answers[q.id];items.push(['Q'+(i+1)+'. '+q.text,Array.isArray(v)?arr(v):(v||'–')])});
+      items.push(['Name',r.name||'–'],['Email',r.email||'–']);
+    }else{
+      items.push(['Email',r.email||'–'],['Would use a mini-program instead of an app',r.would_use||'–'],['Used on phone monthly',arr(r.usage)],['Annoyance of one-off app downloads (1–5)',r.annoyance??'–'],['Usual online payment',r.pay_how||'–'],['Worries',arr(r.worries)],['Age group',r.age||'–'],['Country',r.country||'–'],['Most wanted service and why',r.wish||'–'],['Open to a short chat',r.open_to_chat?'Yes':'No']);
+    }
+    items.push(['Saw the landing page first',r.saw_landing?'Yes':'No (opened the survey link directly)']);
+    items.forEach(p=>{dl.appendChild(el('dt',{},p[0]));dl.appendChild(el('dd',{},String(p[1]??'–')))});
     dc.appendChild(dl);dt.appendChild(dc);body.appendChild(dt);
     btn.addEventListener('click',()=>{const open=dt.hidden;dt.hidden=!open;btn.setAttribute('aria-expanded',String(open));btn.textContent=open?'Hide':'Details'});
   });
 }
 function csvCell(v){let s=String(v??'');if(/^[=+\-@\t\r]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
 $('csv').addEventListener('click',()=>{
-  const cols=[['Date',r=>r.created_at],['Name',r=>r.name],['Email',r=>r.email],['Source',r=>r.src],['Source type',r=>group(r.src||'direct')],['Clicked the CTA',r=>r.via_cta?'yes':'no'],['Would use',r=>r.would_use],['Used monthly',r=>(r.usage||[]).join('; ')],['Annoyance 1-5',r=>r.annoyance],['Usual payment',r=>r.pay_how],['Worries',r=>(r.worries||[]).join('; ')],['Age',r=>r.age],['Country',r=>r.country],['Wish',r=>r.wish],['Open to chat',r=>r.open_to_chat?'yes':'no']];
+  const qs=QDEF?QDEF.questions:[];
+  const ans=(r,id)=>{const v=r.answers&&r.answers[id];return Array.isArray(v)?v.join('; '):(v??'')};
+  const cols=[['Date',r=>r.created_at],['Name',r=>r.name],['Email',r=>r.email],['Source',r=>r.src],['Source type',r=>group(r.src||'direct')],['Clicked the CTA',r=>r.via_cta?'yes':'no']]
+    .concat(qs.map((q,i)=>['Q'+(i+1)+' '+q.text,r=>ans(r,q.id)]));
   const rows=[cols.map(c=>csvCell(c[0])).join(',')].concat(RESP.map(r=>cols.map(c=>csvCell(c[1](r))).join(',')));
   const a=el('a',{href:URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv'})),download:'minnow-responses.csv'});document.body.appendChild(a);a.click();a.remove();
 });
@@ -335,13 +346,15 @@ async function load(){
   $('msg').textContent='Loading…';
   const h={'x-dashboard-key':key};
   try{
+    const qp=fetch('/survey-questions.json').then(x=>x.ok?x.json():null).then(j=>{QDEF=j}).catch(()=>{});
     const [rs,rr]=await Promise.all([fetch('/api/stats',{headers:h,cache:'no-store'}),fetch('/api/responses',{headers:h,cache:'no-store'}).catch(()=>null)]);
+    await qp;
     if(rs.status===401){$('msg').textContent='Wrong access key.';return}
     if(!rs.ok)throw new Error(rs.status);
     sessionStorage.setItem('dk',key);
     renderStats(await rs.json());
     if(rr&&rr.ok){RESP=await rr.json();renderChips();renderResponses()}
-    else{RESP=[];renderChips();renderResponses();$('respmsg').textContent='Could not load the responses. Deploy api/responses.js and run supabase/update-2.sql.'}
+    else{RESP=[];renderChips();renderResponses();$('respmsg').textContent='Could not load the responses. Deploy api/responses.js and run supabase/update-3.sql.'}
     $('msg').textContent='Updated '+new Date().toLocaleTimeString();
   }catch(e){$('msg').textContent='Could not load the stats. Run supabase/update-2.sql in Supabase and check your Vercel settings.'}
 }

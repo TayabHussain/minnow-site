@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Minnow – early access survey</title>
+<title>Minnow – survey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
@@ -11,167 +11,204 @@
 :root{--bg:#f2f4fb;--ink:#12182b;--muted:#4d5670;--head:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;--body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif}
 @media (prefers-color-scheme:dark){:root{--bg:#0e1222;--ink:#eef0fa;--muted:#a3abc6}}
 *,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--body)}
 a{color:inherit}
 :focus-visible{outline:3px solid #2f54eb;outline-offset:3px;border-radius:6px}
-.wrap{max-width:660px;margin:0 auto;padding:0 20px 60px}
-header{padding:22px 0}
+.wrap{max-width:660px;margin:0 auto;padding:0 18px 60px}
+header{padding:22px 0 14px}
 .logo{font:700 24px var(--head);letter-spacing:-.02em;text-decoration:none}
 .logo i{display:inline-block;width:.62em;height:.62em;background:#c8f169;border:2px solid var(--ink);border-radius:50%;margin-right:.3em}
-h1{font:700 clamp(32px,6vw,46px)/1.06 var(--head);letter-spacing:-.025em;margin:10px 0 12px}
-.intro{color:var(--muted);margin:0 0 26px;max-width:52ch}
-.card{background:#12182b;color:#f2f4fb;border:1.5px solid #3a4468;border-radius:22px;padding:clamp(22px,5vw,38px)}
+.progress{height:6px;border-radius:3px;background:rgba(127,135,170,.28);overflow:hidden;margin-bottom:12px}
+.progress div{height:100%;width:0;background:#2f54eb;border-radius:3px;transition:width .3s ease}
+@media (prefers-color-scheme:dark){.progress div{background:#c8f169}}
+.where{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:14px;margin:0 0 14px}
+.card{background:#12182b;color:#f2f4fb;border:1.5px solid #3a4468;border-radius:22px;padding:clamp(20px,5vw,36px)}
 .card :focus-visible{outline-color:#c8f169}
-form{display:grid;gap:16px}
-label{font:600 15px var(--body);display:grid;gap:6px;color:#fff}
-input,select,textarea{font:400 16px var(--body);padding:12px 13px;border-radius:9px;border:1.5px solid #4a5273;background:#fff;color:#12182b;width:100%}
-textarea{resize:vertical;min-height:72px}
-fieldset{border:0;padding:0;margin:0;display:grid;gap:9px}
-legend{font:600 15px var(--body);color:#fff;padding:0;margin-bottom:8px}
-legend small{font-weight:400;color:#b9c0da}
-.opt{display:flex;gap:10px;align-items:center;font:400 15px var(--body);color:#e1e5f5}
-.opt input,.check input{width:18px;height:18px;flex:none;padding:0;accent-color:#c8f169}
-.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
-.scale label{display:flex;flex-direction:column;align-items:center;gap:6px;font:400 14px var(--body);color:#e1e5f5}
-.scale input{width:20px;height:20px;padding:0;accent-color:#c8f169}
-.ends{display:flex;justify-content:space-between;font-size:12px;color:#b9c0da}
-.survey{border-top:1px solid #3a4468;padding-top:20px;display:grid;gap:22px}
-.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:#e1e5f5}
-.btn{font:600 17px var(--body);background:#c8f169;color:#1c2a05;border:0;border-radius:10px;padding:15px 22px;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
+.intro{color:#b9c0da;font-size:15px;margin:0 0 18px}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+h1{font:700 clamp(24px,5vw,31px)/1.15 var(--head);letter-spacing:-.02em;margin:0 0 8px;color:#fff;outline:0}
+.hint{color:#b9c0da;font-size:14px;margin:0 0 16px}
+.opts{display:grid;gap:10px;margin-top:16px}
+.opt{display:flex;gap:12px;align-items:center;border:1.5px solid #4a5273;border-radius:12px;padding:13px 15px;cursor:pointer;color:#e1e5f5;font:400 16px/1.35 var(--body);background:transparent}
+.opt:hover{border-color:#8a94bd}
+.opt:focus-within{outline:3px solid #c8f169;outline-offset:2px}
+.opt.on{border-color:#c8f169;background:rgba(200,241,105,.12);color:#fff}
+.opt input{width:19px;height:19px;flex:none;margin:0;accent-color:#c8f169}
+textarea,input[type=text],input[type=email]{font:400 16px var(--body);padding:12px 13px;border-radius:9px;border:1.5px solid #4a5273;background:#fff;color:#12182b;width:100%}
+textarea{resize:vertical;min-height:130px;margin-top:16px}
+label.f{display:grid;gap:6px;font:600 15px var(--body);color:#fff;margin-top:14px}
+.concept p{color:#e1e5f5;font-size:17px;margin:0 0 14px}
+.err{min-height:1.4em;margin:14px 0 0;font-weight:600;color:#ffb4a8}
+.nav{display:flex;justify-content:space-between;gap:12px;margin-top:10px}
+.btn{font:600 17px var(--body);background:#c8f169;color:#1c2a05;border:0;border-radius:10px;padding:14px 26px;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
 .btn:hover{filter:brightness(1.06)}
 .btn:disabled{opacity:.6;cursor:default}
-#msg{min-height:1.4em;font-weight:600;margin:0}
-#msg.err{color:#ffb4a8}
-.note{font-size:13px;color:#b9c0da;margin:0}
-#thanks{display:none;text-align:center;padding:20px 0}
-#thanks h2{font:700 32px var(--head);letter-spacing:-.02em;margin:0 0 10px;color:#fff}
-#thanks p{color:#e1e5f5;margin:0 0 20px}
+.btn.ghost{background:transparent;color:#f2f4fb;border:1.5px solid #4a5273}
+.btn.ghost:hover{border-color:#8a94bd;filter:none}
+.end{text-align:center;padding:14px 0}
+.end h1{font-size:clamp(28px,6vw,36px);margin-bottom:10px}
+.end p{color:#e1e5f5;margin:0 0 20px}
+.note{font-size:13px;color:var(--muted);margin:18px 2px 0}
+@media (prefers-reduced-motion:reduce){.progress div{transition:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header><a class="logo" href="/"><i></i>Minnow</a></header>
-  <h1>Get early access</h1>
-  <p class="intro">Answer a few quick questions (about 2 minutes) and join the waiting list. Your answers decide which services we build first. Only your name, email and question 1 are required.</p>
+
+  <div id="top">
+    <div class="progress" aria-hidden="true"><div id="bar"></div></div>
+    <p class="where"><span id="section"></span><span id="count"></span></p>
+  </div>
 
   <div class="card">
     <form id="f" novalidate autocomplete="off">
-      <label>Your name<input name="name" autocomplete="off" required></label>
-      <label>Email<input name="email" type="email" autocomplete="off" required></label>
-
-      <div class="survey">
-        <fieldset>
-          <legend>1. Would you use a mini-program inside a page instead of downloading an app? <small>(required)</small></legend>
-          <label class="opt"><input type="radio" name="wouldUse" value="Definitely"> Definitely</label>
-          <label class="opt"><input type="radio" name="wouldUse" value="Probably"> Probably</label>
-          <label class="opt"><input type="radio" name="wouldUse" value="Not sure"> Not sure</label>
-          <label class="opt"><input type="radio" name="wouldUse" value="Probably not"> Probably not</label>
-        </fieldset>
-
-        <fieldset>
-          <legend>2. What do you do on your phone at least once a month? <small>(pick any)</small></legend>
-          <label class="opt"><input type="checkbox" name="usage" value="Order food delivery"> Order food delivery</label>
-          <label class="opt"><input type="checkbox" name="usage" value="Book a taxi or ride"> Book a taxi or ride</label>
-          <label class="opt"><input type="checkbox" name="usage" value="Book hotels or travel"> Book hotels or travel</label>
-          <label class="opt"><input type="checkbox" name="usage" value="Book beauty or health appointments"> Book beauty or health appointments</label>
-          <label class="opt"><input type="checkbox" name="usage" value="Split bills with friends"> Split bills with friends</label>
-        </fieldset>
-
-        <fieldset>
-          <legend>3. How annoying is downloading an app for a one-off service?</legend>
-          <div class="scale">
-            <label><input type="radio" name="annoy" value="1">1</label>
-            <label><input type="radio" name="annoy" value="2">2</label>
-            <label><input type="radio" name="annoy" value="3">3</label>
-            <label><input type="radio" name="annoy" value="4">4</label>
-            <label><input type="radio" name="annoy" value="5">5</label>
-          </div>
-          <div class="ends"><span>Not at all</span><span>Very annoying</span></div>
-        </fieldset>
-
-        <label>4. How do you usually pay online?
-          <select name="payHow">
-            <option value="">Choose one</option>
-            <option>iDEAL</option>
-            <option>Credit or debit card</option>
-            <option>PayPal</option>
-            <option>Apple Pay or Google Pay</option>
-            <option>Wero</option>
-            <option>Something else</option>
-          </select>
-        </label>
-
-        <fieldset>
-          <legend>5. What would worry you about paying inside a mini-program? <small>(pick any)</small></legend>
-          <label class="opt"><input type="checkbox" name="worry" value="Payment security"> Payment security</label>
-          <label class="opt"><input type="checkbox" name="worry" value="My personal data"> My personal data</label>
-          <label class="opt"><input type="checkbox" name="worry" value="Trusting the service provider"> Trusting the service provider</label>
-          <label class="opt"><input type="checkbox" name="worry" value="Nothing in particular"> Nothing in particular</label>
-        </fieldset>
-
-        <label>6. Which age group are you in?
-          <select name="age">
-            <option value="">Prefer not to say</option>
-            <option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55 or older</option>
-          </select>
-        </label>
-
-        <label>7. Which country do you live in?
-          <select name="country">
-            <option value="">Prefer not to say</option>
-            <option>Netherlands</option><option>Belgium</option><option>Germany</option><option>France</option><option>Another EU country</option><option>Outside the EU</option>
-          </select>
-        </label>
-
-        <label>8. Which service would you most want to use this way, and why?
-          <textarea name="wish" maxlength="500"></textarea>
-        </label>
+      <p class="intro" id="intro" hidden></p>
+      <fieldset id="fs" aria-labelledby="q">
+        <h1 id="q" tabindex="-1"></h1>
+        <p class="hint" id="hint" hidden></p>
+        <div id="body"></div>
+      </fieldset>
+      <p class="err" id="err" role="alert"></p>
+      <div class="nav">
+        <button type="button" class="btn ghost" id="back">Back</button>
+        <button type="submit" class="btn" id="next">Next</button>
       </div>
-
-      <label class="check"><input type="checkbox" name="chat"> I’m open to a short chat about my answers</label>
-      <button class="btn" type="submit" id="go">Join the waiting list</button>
-      <p id="msg" role="status" aria-live="polite"></p>
-      <p class="note">We save your answers and a one-way hashed version of your IP address, which stops the same person being counted twice. We only email you about Minnow.</p>
     </form>
 
-    <div id="thanks" role="status">
-      <h2>You’re on the list!</h2>
-      <p id="thanksLine">Thank you for your answers.</p>
+    <div class="end" id="out" hidden role="status">
+      <h1 id="outTitle" tabindex="-1"></h1>
+      <p id="outText"></p>
       <a class="btn" href="/">Back to the homepage</a>
     </div>
   </div>
+
+  <p class="note">We save your answers and a one-way hashed version of your IP address, which stops the same person being counted twice. Your answers are used for academic research.</p>
 </div>
 
 <script>
-const f=document.getElementById('f'),msg=document.getElementById('msg'),go=document.getElementById('go');
-const q=new URLSearchParams(location.search),source=(q.get('src')||q.get('ref')||'direct').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,30)||'direct';
+const $=id=>document.getElementById(id);
+const q0=new URLSearchParams(location.search),source=(q0.get('src')||q0.get('ref')||'direct').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,30)||'direct';
 fetch('/api/view',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({src:source}),keepalive:true}).catch(()=>{});
-function say(t,c){msg.textContent=t;msg.className=c||''}
-f.addEventListener('submit',async e=>{
-  e.preventDefault();
-  const d=new FormData(f),name=(d.get('name')||'').trim(),email=(d.get('email')||'').trim(),wouldUse=d.get('wouldUse');
-  if(!name||!/^\S+@\S+\.\S+$/.test(email)){say('Please add your name and a valid email.','err');return}
-  if(!wouldUse){say('Please answer question 1.','err');return}
-  go.disabled=true;say('Sending…');
+
+let DEF=null,steps=[],idx=0,total=0;
+const answers={},contact={name:'',email:''};
+const el=(tag,attrs,text)=>{const e=document.createElement(tag);for(const k in (attrs||{})){if(k==='class')e.className=attrs[k];else e.setAttribute(k,attrs[k])}if(text!=null)e.textContent=text;return e};
+
+async function init(){
   try{
-    const r=await fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      name,email,wouldUse,source,
-      usage:d.getAll('usage'),
-      annoyance:d.get('annoy')||'',
-      payHow:d.get('payHow')||'',
-      worries:d.getAll('worry'),
-      age:d.get('age')||'',
-      country:d.get('country')||'',
-      wish:(d.get('wish')||'').trim(),
-      openToChat:!!d.get('chat')
-    })});
+    const r=await fetch('/survey-questions.json',{cache:'no-cache'});
+    if(!r.ok)throw new Error(r.status);
+    DEF=await r.json();
+  }catch(e){
+    $('q').textContent='The survey could not be loaded.';$('next').hidden=true;$('back').hidden=true;
+    $('err').textContent='Please check your connection and reload the page.';return;
+  }
+  DEF.questions.forEach(q=>{
+    if(DEF.concept&&DEF.concept.before===q.id)steps.push({kind:'concept'});
+    steps.push({kind:'q',q});
+  });
+  steps.push({kind:'contact'});
+  total=DEF.questions.length;
+  render();
+}
+
+function render(){
+  const s=steps[idx];
+  $('err').textContent='';
+  $('bar').style.width=(100*idx/steps.length)+'%';
+  $('intro').hidden=!(idx===0);if(idx===0)$('intro').textContent=DEF.intro;
+  $('back').hidden=idx===0;
+  const body=$('body');body.textContent='';
+  $('hint').hidden=true;
+  $('next').textContent='Next';
+
+  if(s.kind==='q'){
+    const q=s.q,n=DEF.questions.indexOf(q)+1;
+    $('section').textContent=q.section;$('count').textContent='Question '+n+' of '+total+(q.required?'':' (optional)');
+    $('q').textContent=q.text;
+    if(q.type==='multi'){$('hint').textContent='Select all that apply.';$('hint').hidden=false}
+    if(q.type==='text'){
+      const t=el('textarea',{id:'ta',maxlength:'1000','aria-labelledby':'q',placeholder:'Type your answer here (optional)'});
+      t.value=answers[q.id]||'';t.addEventListener('input',()=>{answers[q.id]=t.value});body.appendChild(t);
+      $('next').textContent='Continue';
+    }else{
+      const multi=q.type==='multi',box=el('div',{class:'opts',role:multi?'group':'radiogroup','aria-labelledby':'q'});
+      const cur=multi?(answers[q.id]||[]):answers[q.id];
+      q.options.forEach((o,i)=>{
+        const lab=el('label',{class:'opt'});
+        const inp=el('input',{type:multi?'checkbox':'radio',name:q.id,value:o});
+        inp.checked=multi?cur.includes(o):cur===o;
+        lab.classList.toggle('on',inp.checked);
+        lab.appendChild(inp);lab.appendChild(el('span',{},o));
+        inp.addEventListener('change',e=>onPick(q,box,e.target));
+        box.appendChild(lab);
+      });
+      body.appendChild(box);
+    }
+  }else if(s.kind==='concept'){
+    $('section').textContent='Section 3 – Introducing the Mini Apps Concept';$('count').textContent='';
+    $('q').textContent=DEF.concept.title;
+    const d=el('div',{class:'concept'});DEF.concept.paragraphs.forEach(p=>d.appendChild(el('p',{},p)));body.appendChild(d);
+    $('next').textContent='Continue';
+  }else{
+    $('section').textContent='Almost done';$('count').textContent='Optional';
+    $('q').textContent='Want to hear when Minnow launches?';
+    $('hint').textContent='Leave your name and email if you want updates. You can also skip this and just submit your answers.';$('hint').hidden=false;
+    const a=el('label',{class:'f'},'Your name (optional)');const ni=el('input',{type:'text',name:'name',autocomplete:'off',maxlength:'100'});ni.value=contact.name;ni.addEventListener('input',()=>{contact.name=ni.value});a.appendChild(ni);
+    const b=el('label',{class:'f'},'Email (optional)');const ei=el('input',{type:'email',name:'email',autocomplete:'off',maxlength:'200'});ei.value=contact.email;ei.addEventListener('input',()=>{contact.email=ei.value});b.appendChild(ei);
+    body.appendChild(a);body.appendChild(b);
+    $('next').textContent='Submit my answers';
+  }
+  $('q').focus({preventScroll:true});
+  window.scrollTo({top:0});
+}
+
+function onPick(q,box,changed){
+  const inputs=[...box.querySelectorAll('input')];
+  if(q.type==='multi'){
+    const excl=q.exclusive||[];
+    if(changed&&changed.checked&&excl.includes(changed.value))inputs.forEach(i=>{if(i!==changed)i.checked=false});
+    else if(changed&&changed.checked)inputs.forEach(i=>{if(excl.includes(i.value))i.checked=false});
+    answers[q.id]=inputs.filter(i=>i.checked).map(i=>i.value);
+  }else{
+    const c=inputs.find(i=>i.checked);answers[q.id]=c?c.value:null;
+  }
+  inputs.forEach(i=>i.parentElement.classList.toggle('on',i.checked));
+  $('err').textContent='';
+}
+
+function showEnd(title,text){
+  $('f').hidden=true;$('top').hidden=true;$('out').hidden=false;
+  $('outTitle').textContent=title;$('outText').textContent=text;$('outTitle').focus();window.scrollTo({top:0});
+}
+
+$('back').addEventListener('click',()=>{if(idx>0){idx--;render()}});
+$('f').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const s=steps[idx];
+  if(s.kind==='q'){
+    const q=s.q,v=answers[q.id];
+    if(q.required){
+      const empty=q.type==='multi'?!(v&&v.length):!v;
+      if(empty){$('err').textContent=q.type==='multi'?'Please select at least one answer to continue.':'Please choose an answer to continue.';return}
+    }
+    if(q.screenOut&&v===q.screenOut){showEnd('Thank you for your interest','This survey is only for people who live in the Netherlands, so we can’t include your answers. We appreciate you taking a look.');return}
+  }
+  if(s.kind!=='contact'){idx++;render();return}
+
+  const email=contact.email.trim();
+  if(email&&!/^\S+@\S+\.\S+$/.test(email)){$('err').textContent='Please enter a valid email address, or leave it empty.';return}
+  const go=$('next');go.disabled=true;$('err').textContent='';go.textContent='Sending…';
+  try{
+    const r=await fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source,answers,name:contact.name.trim(),email})});
     if(!r.ok)throw new Error('bad status '+r.status);
-    f.style.display='none';
-    document.getElementById('thanksLine').textContent='Thank you, '+name.split(' ')[0]+'. We’ll be in touch when Minnow is ready.';
-    document.getElementById('thanks').style.display='block';
-    window.scrollTo({top:0});
-  }catch(err){say('Something went wrong sending your answers. Please try again.','err');go.disabled=false}
+    $('bar').style.width='100%';
+    showEnd('Thank you!',email?'Your answers are in. We’ll email you when Minnow is ready.':'Your answers are in. Thank you for helping with this research.');
+  }catch(err){$('err').textContent='Something went wrong sending your answers. Please try again.';go.disabled=false;go.textContent='Submit my answers'}
 });
+init();
 </script>
 </body>
 </html>

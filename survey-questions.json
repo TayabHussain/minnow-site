@@ -1,0 +1,245 @@
+{
+ "intro": "The survey takes approximately 4–5 minutes. All responses will be used for academic research.",
+ "concept": {
+  "before": "q8",
+  "title": "Introducing the Mini Apps concept",
+  "paragraphs": [
+   "Imagine having one platform where you can access services from multiple businesses without downloading a separate application for each business.",
+   "For example, you could order food, shop, book appointments, access loyalty programmes and make payments through one integrated platform.",
+   "These individual services are called Mini Apps. Similar ecosystems already exist in China through platforms such as WeChat and Alipay."
+  ]
+ },
+ "questions": [
+  {
+   "id": "q1",
+   "section": "Section 1 – Consumer Profile",
+   "text": "Do you currently live in the Netherlands?",
+   "type": "single",
+   "required": true,
+   "options": [
+    "Yes",
+    "No"
+   ],
+   "screenOut": "No"
+  },
+  {
+   "id": "q2",
+   "section": "Section 1 – Consumer Profile",
+   "text": "What is your age group?",
+   "type": "single",
+   "required": true,
+   "options": [
+    "Under 18",
+    "18–24",
+    "25–34",
+    "35–44",
+    "45–54",
+    "55 or older"
+   ]
+  },
+  {
+   "id": "q3",
+   "section": "Section 2 – Current Digital Behaviour",
+   "text": "How many different apps or websites do you regularly use for shopping, ordering food, booking services and making payments?",
+   "type": "single",
+   "required": true,
+   "options": [
+    "1–2",
+    "3–5",
+    "6–8",
+    "9 or more",
+    "Not sure"
+   ]
+  },
+  {
+   "id": "q4",
+   "section": "Section 2 – Current Digital Behaviour",
+   "text": "How often do you use digital services such as online shopping, food ordering or appointment booking?",
+   "type": "single",
+   "required": true,
+   "options": [
+    "Daily",
+    "Several times a week",
+    "Once a week",
+    "A few times a month",
+    "Rarely",
+    "Never"
+   ]
+  },
+  {
+   "id": "q5",
+   "section": "Section 2 – Current Digital Behaviour",
+   "text": "How often do you find it inconvenient to switch between different apps or websites to access services?",
+   "type": "single",
+   "required": true,
+   "options": [
+    "Very often",
+    "Often",
+    "Sometimes",
+    "Rarely",
+    "Never"
+   ]
+  },
+  {
+   "id": "q6",
+   "section": "Section 2 – Current Digital Behaviour",
+   "text": "What difficulties do you experience when using different apps or websites?",
+   "type": "multi",
+   "required": true,
+   "options": [
+    "Having too many apps installed",
+    "Creating separate accounts for different services",
+    "Repeatedly entering personal or payment information",
+    "Switching between different platforms",
+    "Finding the right app or website",
+    "Managing different loyalty programmes",
+    "Privacy or security concerns",
+    "I do not experience any difficulties"
+   ],
+   "exclusive": [
+    "I do not experience any difficulties"
+   ]
+  },
+  {
+   "id": "q7",
+   "section": "Section 2 – Current Digital Behaviour",
+   "text": "How much time or effort do you feel you lose managing different apps and websites?",
+   "type": "single",
+   "required": true,
+   "options": [
+    "A lot",
+    "A moderate amount",
+    "A little",
+    "None",
+    "Not sure"
+   ]
+  },
+  {
+   "id": "q8",
+   "section": "Section 3 – Introducing the Mini Apps Concept",
+   "text": "How appealing do you find the idea of accessing multiple businesses and services through one platform?",
+   "type": "single",
+   "required": true,
+   "options": [
+    "Very appealing",
+    "Somewhat appealing",
+    "Neutral",
+    "Somewhat unappealing",
+    "Very unappealing"
+   ]
+  },
+  {
+   "id": "q9",
+   "section": "Section 3 – Introducing the Mini Apps Concept",
+   "text": "Which services would you be interested in accessing through one platform?",
+   "type": "multi",
+   "required": true,
+   "options": [
+    "Food ordering and restaurant services",
+    "Online shopping and retail",
+    "Appointment booking (hairdressers, gyms, etc.)",
+    "Supermarket and grocery shopping",
+    "Transportation and mobility services",
+    "Entertainment and event booking",
+    "Digital loyalty programmes and rewards",
+    "Payments and financial services",
+    "Local business services",
+    "None of the above"
+   ],
+   "exclusive": [
+    "None of the above"
+   ]
+  },
+  {
+   "id": "q10",
+   "section": "Section 3 – Introducing the Mini Apps Concept",
+   "text": "Compared with your current apps and websites, which option would you prefer?",
+   "type": "single",
+   "required": true,
+   "options": [
+    "One integrated platform for multiple services",
+    "Separate specialised apps and websites",
+    "A combination of both",
+    "No preference",
+    "Not sure"
+   ]
+  },
+  {
+   "id": "q11",
+   "section": "Section 4 – Adoption and Usage",
+   "text": "If this platform were available in the Netherlands, how likely would you be to try it?",
+   "type": "single",
+   "required": true,
+   "options": [
+    "Very likely",
+    "Somewhat likely",
+    "Neither likely nor unlikely",
+    "Somewhat unlikely",
+    "Very unlikely"
+   ]
+  },
+  {
+   "id": "q12",
+   "section": "Section 4 – Adoption and Usage",
+   "text": "How frequently would you expect to use such a platform if it included services relevant to you?",
+   "type": "single",
+   "required": true,
+   "options": [
+    "Daily",
+    "Several times a week",
+    "Once a week",
+    "A few times a month",
+    "Rarely",
+    "Never",
+    "Not sure"
+   ]
+  },
+  {
+   "id": "q13",
+   "section": "Section 4 – Adoption and Usage",
+   "text": "What would most encourage you to use this platform?",
+   "type": "multi",
+   "required": true,
+   "options": [
+    "Convenience and time savings",
+    "Access to multiple businesses in one place",
+    "Discounts and exclusive offers",
+    "Loyalty points and rewards",
+    "Easier payments and checkout",
+    "Fewer separate accounts and applications",
+    "Personalised recommendations",
+    "Nothing would encourage me to use it"
+   ],
+   "exclusive": [
+    "Nothing would encourage me to use it"
+   ]
+  },
+  {
+   "id": "q14",
+   "section": "Section 5 – Barriers and Concerns",
+   "text": "What would prevent you from using a platform like this?",
+   "type": "multi",
+   "required": true,
+   "options": [
+    "Privacy and data security concerns",
+    "Preference for existing applications",
+    "Not enough participating businesses",
+    "Difficult or confusing interface",
+    "Lack of trust in the platform",
+    "No clear advantage over existing apps",
+    "Too many notifications or advertisements",
+    "Nothing would prevent me from using it"
+   ],
+   "exclusive": [
+    "Nothing would prevent me from using it"
+   ]
+  },
+  {
+   "id": "q15",
+   "section": "Section 5 – Barriers and Concerns",
+   "text": "In your opinion, what would make this platform genuinely useful for your daily life?",
+   "type": "text",
+   "required": false
+  }
+ ]
+}

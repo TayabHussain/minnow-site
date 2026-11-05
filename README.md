@@ -8,7 +8,7 @@
 - IP addresses are stored only as a salted one-way hash. That is enough to count each visitor once, but the raw address is never saved.
 
 ## Setup
-1. **Supabase.** Create a project at supabase.com. Open SQL Editor, paste all of `supabase/schema.sql`, click Run. (Already ran an earlier version? Run `supabase/update-2.sql` instead. It keeps your data and adds main-page tracking, the daily chart data and the responses list.)
+1. **Supabase.** Create a project at supabase.com. Open SQL Editor, paste all of `supabase/schema.sql`, click Run. (Already ran an earlier version? Run `supabase/update-2.sql` and then `supabase/update-3.sql` instead. They keep your data and add main-page tracking, the daily chart data, the responses list and the column for the new 15-question survey.)
 2. **Supabase keys.** Project Settings → API. Copy the Project URL and the *secret* key (or the legacy `service_role` key). Never put this key in a web page.
 3. **Vercel environment variables** (Project → Settings → Environment Variables), then redeploy:
 
@@ -32,3 +32,10 @@
 - **Charts:** funnel, last 30 days (hover or tap for numbers, or switch to a table), and CTA clickers per source.
 - **Survey responses:** every submission with its source label, whether that person clicked the CTA or opened the survey link directly, filters (clicked the CTA, direct to survey, social media), expandable answers and a CSV download.
 - The landing page logs a visit through `/api/view` (`page: 'landing'`), the CTA through `/api/go`, and the survey page through `/api/view`. All three store the same hashed IP, which is how clicks, visits and submissions are matched to one person.
+
+## The survey (`/survey`)
+- 15 questions, one per screen (wizard). The questions live in ONE file, `survey-questions.json`: the survey page, the server-side validation and the dashboard all read it. To change a question or option, edit that file only.
+- Q1 = No screens the person out (nothing is saved). Q6, Q9, Q13 and Q14 are multiple choice, and their "none" options (e.g. "None of the above") clear the other choices. Q15 is optional text; all other questions are required and also checked on the server.
+- The Mini Apps description appears between Q7 and Q8.
+- A last optional step asks for a name and email for launch updates. Remove it by deleting the `contact` step in `survey.html` if you want fully anonymous responses.
+- Answers are stored as JSON in `survey_responses.answers` (keys `q1` to `q15`) and emailed through Resend.
