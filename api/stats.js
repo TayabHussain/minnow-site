@@ -10,7 +10,9 @@ module.exports = async (req, res) => {
   if (!ok) return res.status(401).json({ error: 'Unauthorized' });
 
   try {
-    return res.status(200).json(await sbRpc('get_stats'));
+    const data = await sbRpc('get_stats');
+    const checks = { ip_salt: !!process.env.IP_SALT, resend_key: !!process.env.RESEND_API_KEY };
+    return res.status(200).json({ ...data, checks });
   } catch (err) {
     console.error('Stats failed:', err.message);
     return res.status(500).json({ error: 'Could not load stats' });

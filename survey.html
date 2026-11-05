@@ -145,6 +145,7 @@ legend small{font-weight:400;color:#b9c0da}
 <script>
 const f=document.getElementById('f'),msg=document.getElementById('msg'),go=document.getElementById('go');
 const q=new URLSearchParams(location.search),source=(q.get('src')||q.get('ref')||'direct').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,30)||'direct';
+fetch('/api/view',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({src:source}),keepalive:true}).catch(()=>{});
 function say(t,c){msg.textContent=t;msg.className=c||''}
 f.addEventListener('submit',async e=>{
   e.preventDefault();

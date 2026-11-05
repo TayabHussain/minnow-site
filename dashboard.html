@@ -32,6 +32,9 @@ td:not(:first-child),th:not(:first-child){text-align:right}
 tr:last-child td{border-bottom:0}
 h3{margin:0 0 10px;font-size:18px}
 .scroll{overflow-x:auto}
+.warn{background:#fff3cd;color:#5c4400;border:1.5px solid #e0b84a;border-radius:12px;padding:12px 14px;margin-bottom:18px;font-size:14px}
+.warn p{margin:0 0 6px}.warn p:last-child{margin:0}
+.foot{color:var(--muted);font-size:14px;margin:0 0 26px}
 </style>
 </head>
 <body>
@@ -45,17 +48,19 @@ h3{margin:0 0 10px;font-size:18px}
   </div>
 
   <div id="out" hidden>
+    <div id="warns"></div>
     <div class="cards">
       <div class="c"><h2>Unique CTA clickers</h2><div class="v" id="uc">–</div><small id="tc"></small></div>
+      <div class="c"><h2>Reached the survey page</h2><div class="v" id="rs">–</div><small id="rsp"></small></div>
       <div class="c"><h2>Completed the survey</h2><div class="v" id="cv">–</div><small>of those who clicked the CTA</small></div>
       <div class="c hl"><h2>Conversion</h2><div class="v" id="rate">–</div><small>CTA clickers who finished the survey</small></div>
-      <div class="c"><h2>All survey responses</h2><div class="v" id="ur">–</div><small id="ts"></small></div>
     </div>
+    <p class="foot" id="foot"></p>
 
     <h3>By source</h3>
     <div class="scroll">
       <table>
-        <thead><tr><th>Source</th><th>Unique clickers</th><th>Completed survey</th><th>Conversion</th></tr></thead>
+        <thead><tr><th>Source</th><th>Unique clickers</th><th>Reached survey</th><th>Completed</th><th>Conversion</th></tr></thead>
         <tbody id="rows"></tbody>
       </table>
     </div>
@@ -70,17 +75,23 @@ const saved=sessionStorage.getItem('dk');if(saved)$('key').value=saved;
 function cell(tr,text){const td=document.createElement('td');td.textContent=text;tr.appendChild(td)}
 function render(s){
   $('out').hidden=false;
+  const w=$('warns');w.textContent='';
+  const c=s.checks||{};
+  const warn=t=>{const d=document.createElement('div');d.className='warn';const p=document.createElement('p');p.textContent=t;d.appendChild(p);w.appendChild(d)};
+  if(c.ip_salt===false)warn('IP_SALT is not set in Vercel. Tracking works with a temporary fallback, but add IP_SALT (a long random string) and redeploy before you collect real data, because changing it later resets the unique counts.');
+  if(c.resend_key===false)warn('RESEND_API_KEY is not set in Vercel, so survey emails will not be sent.');
   $('uc').textContent=s.unique_clickers;
   $('tc').textContent=s.total_clicks+' clicks in total, including repeats';
+  $('rs').textContent=s.reached_survey;
+  $('rsp').textContent=pct(s.reached_survey,s.unique_clickers)+' of CTA clickers opened the survey';
   $('cv').textContent=s.converted;
   $('rate').textContent=pct(s.converted,s.unique_clickers);
-  $('ur').textContent=s.unique_respondents;
-  const direct=s.unique_respondents-s.converted;
-  $('ts').textContent=s.total_surveys+' submissions, '+direct+' without a CTA click';
+  const vd=(s.unique_survey_visitors||0)-(s.reached_survey||0),rd=s.unique_respondents-s.converted;
+  $('foot').textContent=(s.unique_survey_visitors||0)+' unique visitors opened the survey page ('+vd+' without a CTA click). '+s.unique_respondents+' unique people submitted it ('+rd+' without a CTA click, '+s.total_surveys+' submissions in total).';
   const body=$('rows');body.textContent='';
   (s.by_source||[]).forEach(r=>{
     const tr=document.createElement('tr');
-    cell(tr,r.src);cell(tr,r.unique_clickers);cell(tr,r.completed);cell(tr,pct(r.completed,r.unique_clickers));
+    cell(tr,r.src);cell(tr,r.unique_clickers);cell(tr,r.reached_survey);cell(tr,r.completed);cell(tr,pct(r.completed,r.unique_clickers));
     body.appendChild(tr);
   });
   if(!(s.by_source||[]).length){const tr=document.createElement('tr');cell(tr,'No clicks yet');body.appendChild(tr)}

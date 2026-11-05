@@ -2,13 +2,13 @@
 
 ## How it works
 - `index.html`: main page. Every "join" button points to `/api/go`, which logs the click and redirects to `/survey`.
-- `survey.html`: the survey. Submitting it calls `/api/signup`, which saves the answers in Supabase and emails them to you via Resend.
+- `survey.html`: the survey. On load it logs a survey-page visit with its `src` via `/api/view`. Submitting it calls `/api/signup`, which saves the answers in Supabase and emails them to you via Resend.
 - `dashboard.html`: password-protected stats (open `/dashboard`).
 - `?src=linkedin` (or `/go/linkedin`) on the main page is carried through to the click log and the survey.
 - IP addresses are stored only as a salted one-way hash. That is enough to count each visitor once, but the raw address is never saved.
 
 ## Setup
-1. **Supabase.** Create a project at supabase.com. Open SQL Editor, paste all of `supabase/schema.sql`, click Run.
+1. **Supabase.** Create a project at supabase.com. Open SQL Editor, paste all of `supabase/schema.sql`, click Run. (Already ran an earlier version? Run `supabase/update-1.sql` instead.)
 2. **Supabase keys.** Project Settings → API. Copy the Project URL and the *secret* key (or the legacy `service_role` key). Never put this key in a web page.
 3. **Vercel environment variables** (Project → Settings → Environment Variables), then redeploy:
 

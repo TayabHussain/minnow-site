@@ -76,11 +76,24 @@ module.exports = async (req, res) => {
     if (!r.ok) throw new Error(`Resend error ${r.status}: ${await r.text()}`);
   };
 
-  const [db, mail] = await Promise.allSettled([saveToDb(), sendEmail()]);
-  if (db.status === 'rejected') console.error('Database save failed:', db.reason && db.reason.message);
-  if (mail.status === 'rejected') console.error('Email failed:', mail.reason && mail.reason.message);
+  let dbError = '';
+  try {
+    await saveToDb();
+  } catch (err) {
+    dbError = (err && err.message) || 'unknown error';
+    console.error('Database save failed:', dbError);
+  }
+  rows.splice(1, 0, ['Saved to dashboard', dbError ? 'NO - ' + dbError.slice(0, 200) : 'Yes']);
 
-  if (db.status === 'rejected' && mail.status === 'rejected') {
+  let mailOk = true;
+  try {
+    await sendEmail();
+  } catch (err) {
+    mailOk = false;
+    console.error('Email failed:', err && err.message);
+  }
+
+  if (dbError && !mailOk) {
     return res.status(502).json({ error: 'Could not save your answers' });
   }
   return res.status(200).json({ ok: true });
