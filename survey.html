@@ -153,11 +153,11 @@ function render(){
     const d=el('div',{class:'concept'});DEF.concept.paragraphs.forEach(p=>d.appendChild(el('p',{},p)));body.appendChild(d);
     $('next').textContent='Continue';
   }else{
-    $('section').textContent='Almost done';$('count').textContent='Optional';
-    $('q').textContent='Want to hear when Minnow launches?';
-    $('hint').textContent='Leave your name and email if you want updates. You can also skip this and just submit your answers.';$('hint').hidden=false;
-    const a=el('label',{class:'f'},'Your name (optional)');const ni=el('input',{type:'text',name:'name',autocomplete:'off',maxlength:'100'});ni.value=contact.name;ni.addEventListener('input',()=>{contact.name=ni.value});a.appendChild(ni);
-    const b=el('label',{class:'f'},'Email (optional)');const ei=el('input',{type:'email',name:'email',autocomplete:'off',maxlength:'200'});ei.value=contact.email;ei.addEventListener('input',()=>{contact.email=ei.value});b.appendChild(ei);
+    $('section').textContent='Last step';$('count').textContent='';
+    $('q').textContent='Where can we reach you?';
+    $('hint').textContent='Your name and email are required. We only use them to contact you about Minnow.';$('hint').hidden=false;
+    const a=el('label',{class:'f'},'Your name');const ni=el('input',{type:'text',name:'name',autocomplete:'name',maxlength:'100',required:'required'});ni.value=contact.name;ni.addEventListener('input',()=>{contact.name=ni.value;$('err').textContent=''});a.appendChild(ni);
+    const b=el('label',{class:'f'},'Email');const ei=el('input',{type:'email',name:'email',autocomplete:'email',maxlength:'200',required:'required'});ei.value=contact.email;ei.addEventListener('input',()=>{contact.email=ei.value;$('err').textContent=''});b.appendChild(ei);
     body.appendChild(a);body.appendChild(b);
     $('next').textContent='Submit my answers';
   }
@@ -199,13 +199,14 @@ $('f').addEventListener('submit',async e=>{
   if(s.kind!=='contact'){idx++;render();return}
 
   const email=contact.email.trim();
-  if(email&&!/^\S+@\S+\.\S+$/.test(email)){$('err').textContent='Please enter a valid email address, or leave it empty.';return}
+  if(!contact.name.trim()){$('err').textContent='Please enter your name.';return}
+  if(!/^\S+@\S+\.\S+$/.test(email)){$('err').textContent=email?'Please enter a valid email address.':'Please enter your email address.';return}
   const go=$('next');go.disabled=true;$('err').textContent='';go.textContent='Sending…';
   try{
     const r=await fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({source,answers,name:contact.name.trim(),email})});
     if(!r.ok)throw new Error('bad status '+r.status);
     $('bar').style.width='100%';
-    showEnd('Thank you!',email?'Your answers are in. We’ll email you when Minnow is ready.':'Your answers are in. Thank you for helping with this research.');
+    showEnd('Thank you!','Your answers are in. We’ll email you when Minnow is ready.');
   }catch(err){$('err').textContent='Something went wrong sending your answers. Please try again.';go.disabled=false;go.textContent='Submit my answers'}
 });
 init();

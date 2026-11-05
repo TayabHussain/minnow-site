@@ -40,7 +40,8 @@ module.exports = async (req, res) => {
 
   const name = clip(b.name, 100).trim();
   const email = clip(b.email, 200).trim();
-  if (email && !/^\S+@\S+\.\S+$/.test(email)) return res.status(400).json({ error: 'Invalid email' });
+  if (!name) return res.status(400).json({ error: 'Name is required' });
+  if (!/^\S+@\S+\.\S+$/.test(email)) return res.status(400).json({ error: 'A valid email is required' });
 
   const v = validate(b.answers);
   if (v.error) return res.status(400).json({ error: v.error });
@@ -49,8 +50,8 @@ module.exports = async (req, res) => {
 
   const rows = [
     ['Came from', source],
-    ['Name', name || '–'],
-    ['Email', email || '–'],
+    ['Name', name],
+    ['Email', email],
     ...DEF.questions.map((q, i) => {
       const a = answers[q.id];
       return [`Q${i + 1}. ${q.text}`, Array.isArray(a) ? a.join('; ') || '–' : a || '–'];
@@ -61,8 +62,8 @@ module.exports = async (req, res) => {
     await sbInsert('survey_responses', {
       ip_hash: hashIp(clientIp(req)),
       src: source,
-      name: name || null,
-      email: email || null,
+      name,
+      email,
       answers,
     });
   };
@@ -76,11 +77,11 @@ module.exports = async (req, res) => {
     const payload = {
       from: process.env.FROM_EMAIL || 'Minnow <onboarding@resend.dev>',
       to: [process.env.TO_EMAIL || 'tayabhussain@live.nl'],
-      subject: `New Minnow response (${source})${name ? ': ' + name : ''}`,
+      subject: `New Minnow response (${source}): ${name}`,
+      reply_to: email,
       html,
       text,
     };
-    if (email) payload.reply_to = email;
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },

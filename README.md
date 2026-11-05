@@ -37,5 +37,5 @@
 - 15 questions, one per screen (wizard). The questions live in ONE file, `survey-questions.json`: the survey page, the server-side validation and the dashboard all read it. To change a question or option, edit that file only.
 - Q1 = No screens the person out (nothing is saved). Q6, Q9, Q13 and Q14 are multiple choice, and their "none" options (e.g. "None of the above") clear the other choices. Q15 is optional text; all other questions are required and also checked on the server.
 - The Mini Apps description appears between Q7 and Q8.
-- A last optional step asks for a name and email for launch updates. Remove it by deleting the `contact` step in `survey.html` if you want fully anonymous responses.
+- The last step asks for a name and email. Both are required (checked on the page and on the server) so every response can be followed up and counted as a sign-up.
 - Answers are stored as JSON in `survey_responses.answers` (keys `q1` to `q15`) and emailed through Resend.

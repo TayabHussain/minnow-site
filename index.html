@@ -33,12 +33,13 @@ header.top{display:flex;justify-content:space-between;align-items:center;padding
 .btn:hover{filter:brightness(1.08)}
 .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--ink);padding:10px 18px}
 h1,h2,h3{font-family:var(--head);letter-spacing:-.025em;line-height:1.06;margin:0}
-h1{font-size:clamp(40px,6.4vw,76px);font-weight:700;max-width:12ch}
+h1{font-size:clamp(38px,5.4vw,64px);font-weight:700;max-width:12ch}
 h2{font-size:clamp(28px,4vw,42px);font-weight:700;margin-bottom:14px}
 h3{font-size:21px;font-weight:700;margin-bottom:6px;line-height:1.2}
 p{margin:0 0 14px}
 .hero{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:center;padding:36px 0 84px}
-.lede{font-size:19px;color:var(--muted);max-width:46ch;margin:22px 0 28px}
+.lede{font-size:18px;color:var(--muted);max-width:46ch;margin:18px 0 18px}
+.research{font-size:16px;color:var(--muted);max-width:50ch;margin:0 0 22px;padding-left:14px;border-left:3px solid var(--accent)}
 .cta-row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
 .demo{width:300px;max-width:100%;margin:0 auto;background:#fff;color:#12182b;border:10px solid #0a0d1a;border-radius:40px;box-shadow:0 0 0 1.5px #3a4468,8px 8px 0 var(--lime);overflow:hidden;position:relative}
 .bar{display:flex;justify-content:space-between;align-items:center;padding:9px 20px 7px;font:600 12px var(--body);background:#fff}
@@ -147,16 +148,17 @@ footer{padding:0 0 40px;color:var(--muted);font-size:14px}
 <div class="wrap">
   <header class="top">
     <a class="logo" href="#top"><i></i>Minnow</a>
-    <a class="btn ghost" data-cta href="/api/go">Get early access</a>
+    <a class="btn ghost" data-cta href="/api/go">Take the survey</a>
   </header>
 
   <div class="hero" id="top">
     <div>
       <h1>Small apps that open where you already pay.</h1>
       <p class="lede">Book a table, split a bill, pick a delivery slot: Minnow brings WeChat-style mini-programs to your phone, inside the shops and services you already use, with Wero as the payment method. No new app to download.</p>
+      <p class="research">We are conducting research to understand how consumers in the Netherlands use digital services and whether they would be interested in accessing multiple services through one integrated platform.</p>
       <div class="cta-row">
-        <a class="btn" data-cta href="/api/go">Join the waiting list</a>
-        <span style="color:var(--muted);font-size:15px">Free to join. One email when we launch.</span>
+        <a class="btn" data-cta href="/api/go">Take the survey</a>
+        <span style="color:var(--muted);font-size:15px">Takes about 4–5 minutes.</span>
       </div>
     </div>
 
@@ -232,10 +234,10 @@ footer{padding:0 0 40px;color:var(--muted);font-size:14px}
 
   <div class="signup" id="join" style="grid-template-columns:1fr;justify-items:center;text-align:center">
     <div>
-      <h2>Be among the first to try Minnow</h2>
-      <p>Take a 2-minute survey and join the waiting list. Your answers decide which services we build first.</p>
+      <h2>Help shape what comes next</h2>
+      <p>The survey takes about 4–5 minutes. Your answers are used for academic research, and you can leave your email at the end if you want updates.</p>
     </div>
-    <a class="btn" data-cta href="/api/go">Take the survey and join</a>
+    <a class="btn" data-cta href="/api/go">Take the survey</a>
   </div>
 
   <footer>Minnow is an independent concept. It is not affiliated with or endorsed by Wero, EPI or any other payment provider. We count clicks on the sign-up button using a one-way hashed version of your IP address, never the address itself.</footer>
