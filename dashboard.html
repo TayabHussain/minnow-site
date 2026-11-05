@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Minnow – dashboard</title>
+<style>
+:root{--bg:#f2f4fb;--ink:#12182b;--muted:#4d5670;--card:#fff;--line:#d5daea;--accent:#2f54eb;--lime:#c8f169;--font:system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1222;--ink:#eef0fa;--muted:#a3abc6;--card:#171c33;--line:#272e48;--accent:#7d97ff}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font)}
+.wrap{max-width:900px;margin:0 auto;padding:28px 20px 60px}
+h1{font-size:28px;margin:0 0 4px;letter-spacing:-.02em}
+.sub{color:var(--muted);margin:0 0 22px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:22px}
+input{font:inherit;padding:10px 12px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);min-width:240px}
+button{font:inherit;font-weight:600;padding:10px 18px;border-radius:8px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+@media (prefers-color-scheme:dark){button{color:#0e1222}}
+#msg{color:var(--muted);font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:28px}
+.c{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:18px}
+.c.hl{background:var(--lime);border-color:#12182b;color:#1c2a05}
+.c small{display:block;color:var(--muted);font-size:13px}
+.c.hl small{color:#3a4a14}
+.c h2{font-size:14px;font-weight:600;margin:0 0 6px}
+.c .v{font-size:38px;font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:6px}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1.5px solid var(--line);border-radius:14px;overflow:hidden}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line)}
+th{font-size:13px;color:var(--muted);font-weight:600}
+td:not(:first-child),th:not(:first-child){text-align:right}
+tr:last-child td{border-bottom:0}
+h3{margin:0 0 10px;font-size:18px}
+.scroll{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Minnow dashboard</h1>
+  <p class="sub">People are counted once per visitor (by hashed IP address), however often they click.</p>
+  <div class="bar">
+    <input id="key" type="password" placeholder="Access key" autocomplete="off">
+    <button id="load">Load</button>
+    <span id="msg"></span>
+  </div>
+
+  <div id="out" hidden>
+    <div class="cards">
+      <div class="c"><h2>Unique CTA clickers</h2><div class="v" id="uc">–</div><small id="tc"></small></div>
+      <div class="c"><h2>Completed the survey</h2><div class="v" id="cv">–</div><small>of those who clicked the CTA</small></div>
+      <div class="c hl"><h2>Conversion</h2><div class="v" id="rate">–</div><small>CTA clickers who finished the survey</small></div>
+      <div class="c"><h2>All survey responses</h2><div class="v" id="ur">–</div><small id="ts"></small></div>
+    </div>
+
+    <h3>By source</h3>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Source</th><th>Unique clickers</th><th>Completed survey</th><th>Conversion</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const pct=(a,b)=>b?(Math.round(1000*a/b)/10)+'%':'–';
+const saved=sessionStorage.getItem('dk');if(saved)$('key').value=saved;
+
+function cell(tr,text){const td=document.createElement('td');td.textContent=text;tr.appendChild(td)}
+function render(s){
+  $('out').hidden=false;
+  $('uc').textContent=s.unique_clickers;
+  $('tc').textContent=s.total_clicks+' clicks in total, including repeats';
+  $('cv').textContent=s.converted;
+  $('rate').textContent=pct(s.converted,s.unique_clickers);
+  $('ur').textContent=s.unique_respondents;
+  const direct=s.unique_respondents-s.converted;
+  $('ts').textContent=s.total_surveys+' submissions, '+direct+' without a CTA click';
+  const body=$('rows');body.textContent='';
+  (s.by_source||[]).forEach(r=>{
+    const tr=document.createElement('tr');
+    cell(tr,r.src);cell(tr,r.unique_clickers);cell(tr,r.completed);cell(tr,pct(r.completed,r.unique_clickers));
+    body.appendChild(tr);
+  });
+  if(!(s.by_source||[]).length){const tr=document.createElement('tr');cell(tr,'No clicks yet');body.appendChild(tr)}
+}
+async function load(){
+  const key=$('key').value.trim();if(!key){$('msg').textContent='Enter your access key.';return}
+  $('msg').textContent='Loading…';
+  try{
+    const r=await fetch('/api/stats',{headers:{'x-dashboard-key':key},cache:'no-store'});
+    if(r.status===401){$('msg').textContent='Wrong access key.';return}
+    if(!r.ok)throw new Error(r.status);
+    sessionStorage.setItem('dk',key);
+    render(await r.json());
+    $('msg').textContent='Updated '+new Date().toLocaleTimeString();
+  }catch(e){$('msg').textContent='Could not load the stats. Check your Vercel and Supabase settings.'}
+}
+$('load').addEventListener('click',load);
+$('key').addEventListener('keydown',e=>{if(e.key==='Enter')load()});
+if(saved)load();
+</script>
+</body>
+</html>

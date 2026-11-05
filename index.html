@@ -147,7 +147,7 @@ footer{padding:0 0 40px;color:var(--muted);font-size:14px}
 <div class="wrap">
   <header class="top">
     <a class="logo" href="#top"><i></i>Minnow</a>
-    <a class="btn ghost" href="#join">Get early access</a>
+    <a class="btn ghost" data-cta href="/api/go">Get early access</a>
   </header>
 
   <div class="hero" id="top">
@@ -155,7 +155,7 @@ footer{padding:0 0 40px;color:var(--muted);font-size:14px}
       <h1>Small apps that open where you already pay.</h1>
       <p class="lede">Book a table, split a bill, pick a delivery slot: Minnow brings WeChat-style mini-programs to your phone, inside the shops and services you already use, with Wero as the payment method. No new app to download.</p>
       <div class="cta-row">
-        <a class="btn" href="#join">Join the waiting list</a>
+        <a class="btn" data-cta href="/api/go">Join the waiting list</a>
         <span style="color:var(--muted);font-size:15px">Free to join. One email when we launch.</span>
       </div>
     </div>
@@ -230,92 +230,15 @@ footer{padding:0 0 40px;color:var(--muted);font-size:14px}
     </div>
   </section>
 
-  <div class="signup" id="join">
+  <div class="signup" id="join" style="grid-template-columns:1fr;justify-items:center;text-align:center">
     <div>
-      <h2>Get early access and shape Minnow</h2>
-      <p>Join the waiting list and answer a few quick questions (about 2 minutes). Your answers decide which services we build first.</p>
-      <p>Only your name, your email and the first question are required. Everything else is optional.</p>
+      <h2>Be among the first to try Minnow</h2>
+      <p>Take a 2-minute survey and join the waiting list. Your answers decide which services we build first.</p>
     </div>
-    <form id="f" novalidate autocomplete="off">
-      <label>Your name<input name="name" autocomplete="off" required></label>
-      <label>Email<input name="email" type="email" autocomplete="off" required></label>
-
-      <div class="survey">
-        <fieldset>
-          <legend>1. Would you use a mini-program inside a page instead of downloading an app? <small>(required)</small></legend>
-          <label class="opt"><input type="radio" name="wouldUse" value="Definitely"> Definitely</label>
-          <label class="opt"><input type="radio" name="wouldUse" value="Probably"> Probably</label>
-          <label class="opt"><input type="radio" name="wouldUse" value="Not sure"> Not sure</label>
-          <label class="opt"><input type="radio" name="wouldUse" value="Probably not"> Probably not</label>
-        </fieldset>
-
-        <fieldset>
-          <legend>2. What do you do on your phone at least once a month? <small>(pick any)</small></legend>
-          <label class="opt"><input type="checkbox" name="usage" value="Order food delivery"> Order food delivery</label>
-          <label class="opt"><input type="checkbox" name="usage" value="Book a taxi or ride"> Book a taxi or ride</label>
-          <label class="opt"><input type="checkbox" name="usage" value="Book hotels or travel"> Book hotels or travel</label>
-          <label class="opt"><input type="checkbox" name="usage" value="Book beauty or health appointments"> Book beauty or health appointments</label>
-          <label class="opt"><input type="checkbox" name="usage" value="Split bills with friends"> Split bills with friends</label>
-        </fieldset>
-
-        <fieldset>
-          <legend>3. How annoying is downloading an app for a one-off service?</legend>
-          <div class="scale">
-            <label><input type="radio" name="annoy" value="1">1</label>
-            <label><input type="radio" name="annoy" value="2">2</label>
-            <label><input type="radio" name="annoy" value="3">3</label>
-            <label><input type="radio" name="annoy" value="4">4</label>
-            <label><input type="radio" name="annoy" value="5">5</label>
-          </div>
-          <div class="ends"><span>Not at all</span><span>Very annoying</span></div>
-        </fieldset>
-
-        <label>4. How do you usually pay online?
-          <select name="payHow">
-            <option value="">Choose one</option>
-            <option>iDEAL</option>
-            <option>Credit or debit card</option>
-            <option>PayPal</option>
-            <option>Apple Pay or Google Pay</option>
-            <option>Wero</option>
-            <option>Something else</option>
-          </select>
-        </label>
-
-        <fieldset>
-          <legend>5. What would worry you about paying inside a mini-program? <small>(pick any)</small></legend>
-          <label class="opt"><input type="checkbox" name="worry" value="Payment security"> Payment security</label>
-          <label class="opt"><input type="checkbox" name="worry" value="My personal data"> My personal data</label>
-          <label class="opt"><input type="checkbox" name="worry" value="Trusting the service provider"> Trusting the service provider</label>
-          <label class="opt"><input type="checkbox" name="worry" value="Nothing in particular"> Nothing in particular</label>
-        </fieldset>
-
-        <label>6. Which age group are you in?
-          <select name="age">
-            <option value="">Prefer not to say</option>
-            <option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55 or older</option>
-          </select>
-        </label>
-
-        <label>7. Which country do you live in?
-          <select name="country">
-            <option value="">Prefer not to say</option>
-            <option>Netherlands</option><option>Belgium</option><option>Germany</option><option>France</option><option>Another EU country</option><option>Outside the EU</option>
-          </select>
-        </label>
-
-        <label>8. Which service would you most want to use this way, and why?
-          <textarea name="wish" maxlength="500"></textarea>
-        </label>
-      </div>
-
-      <label class="check"><input type="checkbox" name="chat"> I’m open to a short chat about my answers</label>
-      <button class="btn" type="submit" id="go">Join the waiting list</button>
-      <p id="msg" role="status" aria-live="polite"></p>
-    </form>
+    <a class="btn" data-cta href="/api/go">Take the survey and join</a>
   </div>
 
-  <footer>Minnow is an independent concept. It is not affiliated with or endorsed by Wero, EPI or any other payment provider. We’ll only use your email to contact you about Minnow, and your survey answers only to improve it.</footer>
+  <footer>Minnow is an independent concept. It is not affiliated with or endorsed by Wero, EPI or any other payment provider. We count clicks on the sign-up button using a one-way hashed version of your IP address, never the address itself.</footer>
 </div>
 
 <script>
@@ -401,32 +324,8 @@ $('confirm').addEventListener('click',()=>{
 });
 $('done').addEventListener('click',()=>{off('v-ok',true);off('v-mp',true)});
 
-const f=document.getElementById('f'),msg=document.getElementById('msg'),go=document.getElementById('go');
 const q=new URLSearchParams(location.search),source=(q.get('src')||q.get('ref')||'direct').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,30)||'direct';
-function say(t,c){msg.textContent=t;msg.className=c||''}
-f.addEventListener('submit',async e=>{
-  e.preventDefault();
-  const d=new FormData(f),name=(d.get('name')||'').trim(),email=(d.get('email')||'').trim(),wouldUse=d.get('wouldUse');
-  if(!name||!/^\S+@\S+\.\S+$/.test(email)){say('Please add your name and a valid email.','err');return}
-  if(!wouldUse){say('Please answer question 1.','err');return}
-  go.disabled=true;say('Saving…');
-  try{
-    const r=await fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
-      name,email,wouldUse,source,
-      usage:d.getAll('usage'),
-      annoyance:d.get('annoy')||'',
-      payHow:d.get('payHow')||'',
-      worries:d.getAll('worry'),
-      age:d.get('age')||'',
-      country:d.get('country')||'',
-      wish:(d.get('wish')||'').trim(),
-      openToChat:!!d.get('chat')
-    })});
-    if(!r.ok)throw new Error('bad status '+r.status);
-    f.reset();say('You’re on the list. Thank you, '+name.split(' ')[0]+'!','ok');
-  }catch(err){say('Something went wrong sending your details. Please try again.','err');}
-  go.disabled=false;
-});
+document.querySelectorAll('[data-cta]').forEach(a=>{a.href='/api/go?src='+encodeURIComponent(source)});
 </script>
 </body>
 </html>

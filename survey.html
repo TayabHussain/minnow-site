@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minnow – early access survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f4fb;--ink:#12182b;--muted:#4d5670;--head:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;--body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme:dark){:root{--bg:#0e1222;--ink:#eef0fa;--muted:#a3abc6}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--body)}
+a{color:inherit}
+:focus-visible{outline:3px solid #2f54eb;outline-offset:3px;border-radius:6px}
+.wrap{max-width:660px;margin:0 auto;padding:0 20px 60px}
+header{padding:22px 0}
+.logo{font:700 24px var(--head);letter-spacing:-.02em;text-decoration:none}
+.logo i{display:inline-block;width:.62em;height:.62em;background:#c8f169;border:2px solid var(--ink);border-radius:50%;margin-right:.3em}
+h1{font:700 clamp(32px,6vw,46px)/1.06 var(--head);letter-spacing:-.025em;margin:10px 0 12px}
+.intro{color:var(--muted);margin:0 0 26px;max-width:52ch}
+.card{background:#12182b;color:#f2f4fb;border:1.5px solid #3a4468;border-radius:22px;padding:clamp(22px,5vw,38px)}
+.card :focus-visible{outline-color:#c8f169}
+form{display:grid;gap:16px}
+label{font:600 15px var(--body);display:grid;gap:6px;color:#fff}
+input,select,textarea{font:400 16px var(--body);padding:12px 13px;border-radius:9px;border:1.5px solid #4a5273;background:#fff;color:#12182b;width:100%}
+textarea{resize:vertical;min-height:72px}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:9px}
+legend{font:600 15px var(--body);color:#fff;padding:0;margin-bottom:8px}
+legend small{font-weight:400;color:#b9c0da}
+.opt{display:flex;gap:10px;align-items:center;font:400 15px var(--body);color:#e1e5f5}
+.opt input,.check input{width:18px;height:18px;flex:none;padding:0;accent-color:#c8f169}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.scale label{display:flex;flex-direction:column;align-items:center;gap:6px;font:400 14px var(--body);color:#e1e5f5}
+.scale input{width:20px;height:20px;padding:0;accent-color:#c8f169}
+.ends{display:flex;justify-content:space-between;font-size:12px;color:#b9c0da}
+.survey{border-top:1px solid #3a4468;padding-top:20px;display:grid;gap:22px}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:400;color:#e1e5f5}
+.btn{font:600 17px var(--body);background:#c8f169;color:#1c2a05;border:0;border-radius:10px;padding:15px 22px;cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
+.btn:hover{filter:brightness(1.06)}
+.btn:disabled{opacity:.6;cursor:default}
+#msg{min-height:1.4em;font-weight:600;margin:0}
+#msg.err{color:#ffb4a8}
+.note{font-size:13px;color:#b9c0da;margin:0}
+#thanks{display:none;text-align:center;padding:20px 0}
+#thanks h2{font:700 32px var(--head);letter-spacing:-.02em;margin:0 0 10px;color:#fff}
+#thanks p{color:#e1e5f5;margin:0 0 20px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><a class="logo" href="/"><i></i>Minnow</a></header>
+  <h1>Get early access</h1>
+  <p class="intro">Answer a few quick questions (about 2 minutes) and join the waiting list. Your answers decide which services we build first. Only your name, email and question 1 are required.</p>
+
+  <div class="card">
+    <form id="f" novalidate autocomplete="off">
+      <label>Your name<input name="name" autocomplete="off" required></label>
+      <label>Email<input name="email" type="email" autocomplete="off" required></label>
+
+      <div class="survey">
+        <fieldset>
+          <legend>1. Would you use a mini-program inside a page instead of downloading an app? <small>(required)</small></legend>
+          <label class="opt"><input type="radio" name="wouldUse" value="Definitely"> Definitely</label>
+          <label class="opt"><input type="radio" name="wouldUse" value="Probably"> Probably</label>
+          <label class="opt"><input type="radio" name="wouldUse" value="Not sure"> Not sure</label>
+          <label class="opt"><input type="radio" name="wouldUse" value="Probably not"> Probably not</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>2. What do you do on your phone at least once a month? <small>(pick any)</small></legend>
+          <label class="opt"><input type="checkbox" name="usage" value="Order food delivery"> Order food delivery</label>
+          <label class="opt"><input type="checkbox" name="usage" value="Book a taxi or ride"> Book a taxi or ride</label>
+          <label class="opt"><input type="checkbox" name="usage" value="Book hotels or travel"> Book hotels or travel</label>
+          <label class="opt"><input type="checkbox" name="usage" value="Book beauty or health appointments"> Book beauty or health appointments</label>
+          <label class="opt"><input type="checkbox" name="usage" value="Split bills with friends"> Split bills with friends</label>
+        </fieldset>
+
+        <fieldset>
+          <legend>3. How annoying is downloading an app for a one-off service?</legend>
+          <div class="scale">
+            <label><input type="radio" name="annoy" value="1">1</label>
+            <label><input type="radio" name="annoy" value="2">2</label>
+            <label><input type="radio" name="annoy" value="3">3</label>
+            <label><input type="radio" name="annoy" value="4">4</label>
+            <label><input type="radio" name="annoy" value="5">5</label>
+          </div>
+          <div class="ends"><span>Not at all</span><span>Very annoying</span></div>
+        </fieldset>
+
+        <label>4. How do you usually pay online?
+          <select name="payHow">
+            <option value="">Choose one</option>
+            <option>iDEAL</option>
+            <option>Credit or debit card</option>
+            <option>PayPal</option>
+            <option>Apple Pay or Google Pay</option>
+            <option>Wero</option>
+            <option>Something else</option>
+          </select>
+        </label>
+
+        <fieldset>
+          <legend>5. What would worry you about paying inside a mini-program? <small>(pick any)</small></legend>
+          <label class="opt"><input type="checkbox" name="worry" value="Payment security"> Payment security</label>
+          <label class="opt"><input type="checkbox" name="worry" value="My personal data"> My personal data</label>
+          <label class="opt"><input type="checkbox" name="worry" value="Trusting the service provider"> Trusting the service provider</label>
+          <label class="opt"><input type="checkbox" name="worry" value="Nothing in particular"> Nothing in particular</label>
+        </fieldset>
+
+        <label>6. Which age group are you in?
+          <select name="age">
+            <option value="">Prefer not to say</option>
+            <option>18–24</option><option>25–34</option><option>35–44</option><option>45–54</option><option>55 or older</option>
+          </select>
+        </label>
+
+        <label>7. Which country do you live in?
+          <select name="country">
+            <option value="">Prefer not to say</option>
+            <option>Netherlands</option><option>Belgium</option><option>Germany</option><option>France</option><option>Another EU country</option><option>Outside the EU</option>
+          </select>
+        </label>
+
+        <label>8. Which service would you most want to use this way, and why?
+          <textarea name="wish" maxlength="500"></textarea>
+        </label>
+      </div>
+
+      <label class="check"><input type="checkbox" name="chat"> I’m open to a short chat about my answers</label>
+      <button class="btn" type="submit" id="go">Join the waiting list</button>
+      <p id="msg" role="status" aria-live="polite"></p>
+      <p class="note">We save your answers and a one-way hashed version of your IP address, which stops the same person being counted twice. We only email you about Minnow.</p>
+    </form>
+
+    <div id="thanks" role="status">
+      <h2>You’re on the list!</h2>
+      <p id="thanksLine">Thank you for your answers.</p>
+      <a class="btn" href="/">Back to the homepage</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const f=document.getElementById('f'),msg=document.getElementById('msg'),go=document.getElementById('go');
+const q=new URLSearchParams(location.search),source=(q.get('src')||q.get('ref')||'direct').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,30)||'direct';
+function say(t,c){msg.textContent=t;msg.className=c||''}
+f.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const d=new FormData(f),name=(d.get('name')||'').trim(),email=(d.get('email')||'').trim(),wouldUse=d.get('wouldUse');
+  if(!name||!/^\S+@\S+\.\S+$/.test(email)){say('Please add your name and a valid email.','err');return}
+  if(!wouldUse){say('Please answer question 1.','err');return}
+  go.disabled=true;say('Sending…');
+  try{
+    const r=await fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      name,email,wouldUse,source,
+      usage:d.getAll('usage'),
+      annoyance:d.get('annoy')||'',
+      payHow:d.get('payHow')||'',
+      worries:d.getAll('worry'),
+      age:d.get('age')||'',
+      country:d.get('country')||'',
+      wish:(d.get('wish')||'').trim(),
+      openToChat:!!d.get('chat')
+    })});
+    if(!r.ok)throw new Error('bad status '+r.status);
+    f.style.display='none';
+    document.getElementById('thanksLine').textContent='Thank you, '+name.split(' ')[0]+'. We’ll be in touch when Minnow is ready.';
+    document.getElementById('thanks').style.display='block';
+    window.scrollTo({top:0});
+  }catch(err){say('Something went wrong sending your answers. Please try again.','err');go.disabled=false}
+});
+</script>
+</body>
+</html>
