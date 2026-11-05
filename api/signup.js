@@ -19,7 +19,10 @@ module.exports = async (req, res) => {
     return res.status(400).json({ error: 'Missing or invalid fields' });
   }
 
+  const source = clip(b.source, 30).replace(/[^a-z0-9_-]/gi, '') || 'direct';
+
   const rows = [
+    ['Came from', source],
     ['Name', name],
     ['Email', email],
     ['Would use a mini-program instead of an app', wouldUse],
@@ -47,7 +50,7 @@ module.exports = async (req, res) => {
         from: process.env.FROM_EMAIL || 'Minnow <onboarding@resend.dev>',
         to: [process.env.TO_EMAIL || 'tayabhussain@live.nl'],
         reply_to: email,
-        subject: `New Minnow sign-up: ${name}`,
+        subject: `New Minnow sign-up (${source}): ${name}`,
         html,
         text,
       }),
